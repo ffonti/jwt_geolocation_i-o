@@ -1,0 +1,17 @@
+<div>
+  <input
+    class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+    type="text"
+    [(ngModel)]="username"
+    placeholder="Username"
+  />
+  <input
+    class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+    type="password"
+    [(ngModel)]="password"
+    placeholder="Password"
+  />
+  <button type="button" class="mt-[5%] btn" (click)="submit()">Accedi</button>
+  <p>{{ msg }}</p>
+  <p>Non hai un account? <a href="/register">Registrati</a></p>
+</div>
