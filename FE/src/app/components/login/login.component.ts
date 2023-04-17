@@ -26,6 +26,8 @@ export class LoginComponent {
         console.log(res);
         this.msg = res.body.msg;
         localStorage.setItem('token', res.body.token);
+        localStorage.setItem('id', res.body.id);
+        localStorage.setItem('username', res.body.username);
         this.router.navigateByUrl('/homePage');
       },
       error: (err) => {

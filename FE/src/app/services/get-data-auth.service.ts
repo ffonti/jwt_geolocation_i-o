@@ -6,9 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class GetDataAuthService {
-  tokenHeader = new HttpHeaders({
+  userData = new HttpHeaders({
     'x-access-token': localStorage.getItem('token')
       ? `${localStorage.getItem('token')}`
+      : '',
+    id: localStorage.getItem('id') ? `${localStorage.getItem('id')}` : '',
+    username: localStorage.getItem('username')
+      ? `${localStorage.getItem('username')}`
       : '',
   });
 
@@ -16,13 +20,13 @@ export class GetDataAuthService {
 
   getNomi(): Observable<any> {
     return this.http.get('http://localhost:3000/api/v1/homePage/nomi', {
-      headers: this.tokenHeader,
+      headers: this.userData,
     });
   }
 
   getColori(): Observable<any> {
     return this.http.get('http://localhost:3000/api/v1/homePage/colori', {
-      headers: this.tokenHeader,
+      headers: this.userData,
     });
   }
 }

@@ -7,7 +7,9 @@ import { GetDataAuthService } from 'src/app/services/get-data-auth.service';
   styleUrls: ['./colori.component.css'],
 })
 export class ColoriComponent {
+  msg: string = '';
   colori: any;
+
   constructor(private getDataAuth: GetDataAuthService) {}
 
   ngOnInit(): void {
@@ -17,6 +19,7 @@ export class ColoriComponent {
       },
       error: (err) => {
         console.log(err);
+        this.msg = err.error.msg;
       },
     });
   }

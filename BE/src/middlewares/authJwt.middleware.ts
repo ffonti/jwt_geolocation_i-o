@@ -2,10 +2,13 @@ import * as jwt from "jsonwebtoken";
 
 exports.authJwt = async (req, res, next) => {
   const token = req.headers["x-access-token"];
-  //controllo req.headers deve esistere
+  const id = req.headers["id"];
+  const username = req.headers["username"];
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      console.log(res.status(403).json({ msg: "Utente non autorizzato" }));
+    console.log(decoded);
+
+    if (err || decoded.data.id != id || decoded.data.username != username) {
+      res.status(403).json({ msg: "Utente non autorizzato" });
     } else {
       next();
     }
