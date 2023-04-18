@@ -5,4 +5,11 @@ import { Component } from '@angular/core';
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
 })
-export class HomePageComponent {}
+export class HomePageComponent {
+  isAdmin: boolean =
+    localStorage.getItem('role')?.toString().toUpperCase() === 'ADMIN';
+
+  logout(): void {
+    localStorage.clear();
+  }
+}

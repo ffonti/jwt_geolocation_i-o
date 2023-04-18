@@ -58,11 +58,17 @@ exports.login = async (req, res) => {
         id: true,
         username: true,
         password: true,
+        role: true,
       },
     })
     .then((userExists) => {
       if (userExists) {
-        const user = { id: userExists.id, username: userExists.username };
+        const user = {
+          id: userExists.id,
+          username: userExists.username,
+          role: userExists.role,
+        };
+
         const token = jwt.sign({ data: user }, process.env.JWT_SECRET, {
           expiresIn: 86400,
         });
@@ -75,6 +81,7 @@ exports.login = async (req, res) => {
           token: token,
           id: userExists.id,
           username: userExists.username,
+          role: userExists.role,
         });
       } else {
         return res.status(404).json({ msg: "Utente non trovato" });

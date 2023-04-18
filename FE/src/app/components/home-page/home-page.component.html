@@ -1,5 +1,8 @@
-<button routerLink="nomi">Nomi</button>
-<br />
+<button routerLink="nomi">Nomi</button> <br /><br />
 <button routerLink="colori">Colori</button>
-<br />
-<button routerLink="/login">Login</button>
+<br /><br />
+<ng-container *ngIf="isAdmin">
+  <button routerLink="/adminPage">Admin Page</button>
+</ng-container>
+<hr />
+<button routerLink="/login" (click)="logout()">Logout</button>

@@ -14,6 +14,7 @@ export class GetDataAuthService {
     username: localStorage.getItem('username')
       ? `${localStorage.getItem('username')}`
       : '',
+    role: localStorage.getItem('role') ? `${localStorage.getItem('role')}` : '',
   });
 
   constructor(private http: HttpClient) {}
@@ -26,6 +27,12 @@ export class GetDataAuthService {
 
   getColori(): Observable<any> {
     return this.http.get('http://localhost:3000/api/v1/homePage/colori', {
+      headers: this.userData,
+    });
+  }
+
+  isAdmin(): Observable<any> {
+    return this.http.get('http://localhost:3000/api/v1/adminPage', {
       headers: this.userData,
     });
   }
