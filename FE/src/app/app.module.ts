@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ColoriComponent } from './components/colori/colori.component';
 import { NomiComponent } from './components/nomi/nomi.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NomiComponent } from './components/nomi/nomi.component';
     RegisterComponent,
     ColoriComponent,
     NomiComponent,
+    AdminPageComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

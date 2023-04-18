@@ -14,6 +14,7 @@ model User {
   id       Int    @id @default(autoincrement())
   username String @unique @db.VarChar(255)
   password String @db.VarChar(255)
+  role     Role   @default(USER)
 
   @@map(name: "user")
 }
@@ -30,4 +31,9 @@ model Colore {
   colore String @db.VarChar(255)
 
   @@map(name: "colore")
+}
+
+enum Role {
+  USER
+  ADMIN
 }

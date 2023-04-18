@@ -6,6 +6,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ColoriComponent } from './components/colori/colori.component';
 import { NomiComponent } from './components/nomi/nomi.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'adminPage', component: AdminPageComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
