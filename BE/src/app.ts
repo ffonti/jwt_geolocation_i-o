@@ -17,6 +17,7 @@ app.use("/api/v1/login", require("./routes/login.routes"));
 app.use("/api/v1/register", require("./routes/register.routes"));
 app.use("/api/v1/homePage", require("./routes/homePage.routes"));
 app.use("/api/v1/adminPage", require("./routes/adminPage.routes"));
+app.use("/api/v1/saveMarker", require("./routes/marker.routes"));
 
 app.listen(process.env.PORT, () => {
   console.log("Listening on port " + process.env.PORT);

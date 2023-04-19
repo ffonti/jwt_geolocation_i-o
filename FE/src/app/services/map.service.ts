@@ -1,7 +1,9 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
+import { Observable } from 'rxjs';
 
 const iconUrl = 'assets/marker-icon.png';
 const iconDefault = icon({
@@ -18,6 +20,21 @@ Marker.prototype.options.icon = iconDefault;
   providedIn: 'root',
 })
 export class MapService {
+  userData = new HttpHeaders({
+    'x-access-token': localStorage.getItem('token')
+      ? `${localStorage.getItem('token')}`
+      : '',
+    id: localStorage.getItem('id') ? `${localStorage.getItem('id')}` : '',
+    username: localStorage.getItem('username')
+      ? `${localStorage.getItem('username')}`
+      : '',
+    role: localStorage.getItem('role') ? `${localStorage.getItem('role')}` : '',
+  });
+  currentLat: string = '';
+  currentLng: string = '';
+
+  constructor(private http: HttpClient) {}
+
   initMap(map: any): void {
     map = L.map('map', {
       center: [41.9027835, 12.4963655], //Coordinate di Roma
@@ -37,16 +54,25 @@ export class MapService {
     tiles.addTo(map);
 
     map.on('click', (e: any) => {
+      this.currentLat = e.latlng.lat;
+      this.currentLng = e.latlng.lng;
       this.mark(map, e.latlng);
-      // this.saveMarkerService.save(e.latlng);
     });
   }
 
   mark(map: any, latlng: L.LatLng): void {
     const marker = L.marker([latlng.lat, latlng.lng]);
     marker.addTo(map).bindPopup(latlng.lat.toString());
-    // marker.on('click', () => {
-    //   marker.remove();
-    // });
+    marker.on('click', () => {
+      marker.remove();
+    });
+  }
+
+  save(nome: string, lat: string, lng: string): Observable<any> {
+    return this.http.post(
+      'http://localhost:3000/api/v1/saveMarker/',
+      { nome, lat, lng },
+      { headers: this.userData, observe: 'response' }
+    );
   }
 }

@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ColoriComponent } from './components/colori/colori.component';
 import { NomiComponent } from './components/nomi/nomi.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AdminPageComponent } from './components/admin-page/admin-page.component
     ColoriComponent,
     NomiComponent,
     AdminPageComponent,
+    MapComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

@@ -10,60 +10,64 @@
     *ngIf="showModal"
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
   >
-    <div class="relative w-auto my-6 mx-auto max-w-3xl">
+    <div class="relative my-6 mx-auto w-[70%] h-[70%]">
       <div
-        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
       >
-        <div class="map-container bg-slate-700">
-          <div class="map-frame">
-            <div id="map"></div>
-          </div>
-        </div>
         <div
           class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
         >
+          <app-map></app-map>
           <button
-            class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            class="p-1 ml-[93%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
             (click)="toggleModal()"
           >
             x
           </button>
-        </div>
-        <div
-          class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
-        >
-          <div class="grid mr-[15%] mt-[5%]">
-            <p>
-              Inserisci le coordinate o clicca in un punto casuale della mappa
-            </p>
-            <input
-              class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-              type="text"
-              [(ngModel)]="nome"
-              placeholder="es. Casa"
-            />
-            <input
-              class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-              type="text"
-              [(ngModel)]="lat"
-              placeholder="es. 41.9027835"
-            />
-            <input
-              class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-              type="text"
-              [(ngModel)]="lng"
-              placeholder="es. 12.4963655"
-            />
-            <button type="button" class="mt-[5%] btn btn-blue">
-              Salva la posizione
-            </button>
+          <div class="flex flex-row-reverse">
+            <div class="grid mr-[15%] mt-[7%]">
+              <p>
+                Inserisci le coordinate o clicca in un punto casuale della mappa
+              </p>
+              <input
+                class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                type="text"
+                [(ngModel)]="nome"
+                placeholder="es. Casa"
+              />
+              <input
+                class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                type="text"
+                [(ngModel)]="lat"
+                placeholder="es. 41.9027835"
+              />
+              <input
+                class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                type="text"
+                [(ngModel)]="lng"
+                placeholder="es. 12.4963655"
+              />
+              <button
+                type="button"
+                class="mt-[5%] btn btn-blue"
+                (click)="saveMarker()"
+              >
+                Salva la posizione
+              </button>
+              <button
+                type="button"
+                class="mt-[5%] btn btn-blue"
+                (click)="compila()"
+              >
+                Compila i campi
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div *ngIf="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
-
   <ng-container *ngIf="isAdmin">
     <button class="btn btn-blue" routerLink="/adminPage">Admin Page</button>
   </ng-container>
