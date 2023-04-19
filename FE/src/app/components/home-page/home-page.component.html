@@ -1,4 +1,4 @@
-<div class="mt-2 flex justify-around">
+<div class="mt-10 flex justify-around">
   <button class="btn btn-blue" routerLink="nomi">Nomi</button>
   <button class="btn btn-blue" routerLink="colori">Colori</button>
 
@@ -11,49 +11,53 @@
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
   >
     <div class="relative w-auto my-6 mx-auto max-w-3xl">
-      <!--content-->
       <div
         class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
       >
-        <!--header-->
-        <div
-          class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
-        >
-          <h3 class="text-3xl font-semibold">Modal Title</h3>
-          <button
-            class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-            (click)="toggleModal()"
-          >
-            <span
-              class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
-            >
-              ×
-            </span>
-          </button>
-        </div>
-        <!--body-->
-        <div class="map-container bg-slate-700 w-[50%]">
+        <div class="map-container bg-slate-700">
           <div class="map-frame">
             <div id="map"></div>
           </div>
         </div>
-        <!--footer-->
+        <div
+          class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
+        >
+          <button
+            class="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="toggleModal()"
+          >
+            x
+          </button>
+        </div>
         <div
           class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
         >
-          <button
-            class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="button"
-            (click)="toggleModal()"
-          >
-            Close</button
-          ><button
-            class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="button"
-            (click)="toggleModal()"
-          >
-            Save Changes
-          </button>
+          <div class="grid mr-[15%] mt-[5%]">
+            <p>
+              Inserisci le coordinate o clicca in un punto casuale della mappa
+            </p>
+            <input
+              class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+              type="text"
+              [(ngModel)]="nome"
+              placeholder="es. Casa"
+            />
+            <input
+              class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+              type="text"
+              [(ngModel)]="lat"
+              placeholder="es. 41.9027835"
+            />
+            <input
+              class="mt-[5%] shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+              type="text"
+              [(ngModel)]="lng"
+              placeholder="es. 12.4963655"
+            />
+            <button type="button" class="mt-[5%] btn btn-blue">
+              Salva la posizione
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -11,6 +11,9 @@ export class HomePageComponent {
   isAdmin: boolean =
     localStorage.getItem('role')?.toString().toUpperCase() === 'ADMIN';
   private map: any;
+  lat: string = '';
+  lng: string = '';
+  nome: string = '';
 
   constructor(private mapService: MapService) {}
 
