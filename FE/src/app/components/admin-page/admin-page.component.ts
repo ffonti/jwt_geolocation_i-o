@@ -23,6 +23,7 @@ export class AdminPageComponent implements OnInit {
         this.username = res.user.username;
       },
       error: (err) => {
+        console.log(err);
         this.router.navigateByUrl('/homePage');
       },
     });

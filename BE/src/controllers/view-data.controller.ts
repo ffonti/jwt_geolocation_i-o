@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-const { nome, colore } = new PrismaClient(); //cos'è??
+const { nome, colore } = new PrismaClient();
 
 exports.getNomi = async (req, res) => {
   const nomi = await nome.findMany();
