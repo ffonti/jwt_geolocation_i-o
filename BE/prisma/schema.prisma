@@ -11,10 +11,11 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
-  role     Role   @default(USER)
+  id       Int        @id @default(autoincrement())
+  username String     @unique @db.VarChar(255)
+  password String     @db.VarChar(255)
+  role     Role       @default(USER)
+  Location Location[]
 
   @@map(name: "user")
 }
@@ -31,6 +32,18 @@ model Colore {
   colore String @db.VarChar(255)
 
   @@map(name: "colore")
+}
+
+model Location {
+  id         Int      @id @default(autoincrement())
+  lat        String   @db.VarChar(20)
+  lng        String   @db.VarChar(20)
+  name       String   @db.VarChar(30)
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+
+  @@map(name: "location")
 }
 
 enum Role {

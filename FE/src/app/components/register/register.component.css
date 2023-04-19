@@ -1,23 +1,9 @@
-input {
-  width: 20%;
-  padding: 12px 20px;
-  margin-top: 2%;
-  margin-left: 1%;
-  box-sizing: border-box;
+.btn {
+  @apply font-bold py-2 px-4 rounded;
 }
-
-button {
-  background-color: deepskyblue; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 2px;
-  margin-left: 1%;
+.btn-blue {
+  @apply bg-blue-500 text-white;
 }
-p {
-  margin-left: 1%;
+.btn-blue:hover {
+  @apply bg-blue-700;
 }

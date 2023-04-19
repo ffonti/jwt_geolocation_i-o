@@ -6,7 +6,7 @@ exports.isAdmin = async (req, res) => {
   await user
     .findUnique({
       where: {
-        id: id * 1,
+        id: +id,
       },
       select: {
         id: true,
@@ -23,5 +23,9 @@ exports.isAdmin = async (req, res) => {
       } else {
         return res.status(404).json({ msg: "Utente non trovato" });
       }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json({ msg: err });
     });
 };
