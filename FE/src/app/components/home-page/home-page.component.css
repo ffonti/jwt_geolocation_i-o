@@ -1,9 +1,30 @@
 .btn {
   @apply font-bold py-2 px-4 rounded;
 }
+
 .btn-blue {
   @apply bg-blue-500 text-white;
 }
+
 .btn-blue:hover {
   @apply bg-blue-700;
+}
+
+.map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 30px;
+}
+
+.map-frame {
+  border: 2px solid black;
+  height: 100%;
+  width: 100%;
+}
+
+#map {
+  height: 100%;
 }
