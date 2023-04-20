@@ -9,6 +9,8 @@ import { GetDataAuthService } from 'src/app/services/get-data-auth.service';
 })
 export class AdminPageComponent implements OnInit {
   users: any;
+  currentUsers: any;
+  index: number = 0;
 
   constructor(
     private getDataAuthService: GetDataAuthService,
@@ -19,11 +21,28 @@ export class AdminPageComponent implements OnInit {
     this.getDataAuthService.getUsers().subscribe({
       next: (res) => {
         this.users = res.users;
+        this.users.sort((a: { id: number }, b: { id: number }) =>
+          a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+        );
+        this.currentUsers = this.users.slice(0, 5);
+        console.log(this.index);
       },
       error: (err) => {
         console.log(err);
         this.router.navigateByUrl('/homePage');
       },
     });
+  }
+
+  indietro(): void {
+    this.index -= 5;
+    this.currentUsers = this.users.slice(this.index, this.index + 5);
+    console.log(this.index);
+  }
+
+  avanti(): void {
+    this.index += 5;
+    this.currentUsers = this.users.slice(this.index, this.index + 5);
+    console.log(this.index);
   }
 }
