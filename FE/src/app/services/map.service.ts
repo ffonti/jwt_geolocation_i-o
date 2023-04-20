@@ -70,7 +70,7 @@ export class MapService {
 
   save(nome: string, lat: string, lng: string): Observable<any> {
     return this.http.post(
-      'http://localhost:3000/api/v1/saveMarker/',
+      'http://localhost:3000/api/v1/saveMarker',
       { nome, lat, lng },
       { headers: this.userData, observe: 'response' }
     );

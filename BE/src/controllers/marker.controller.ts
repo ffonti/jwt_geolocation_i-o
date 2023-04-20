@@ -1,13 +1,13 @@
 import * as jwt from "jsonwebtoken";
 
-const { PrismaClient } = require("@prisma/client");
-const { location, user } = new PrismaClient();
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 exports.postMarker = async (req, res) => {
-  const userId = req.headers["id"];
-  const name = req.body.nome.trim();
-  const lat = req.body.lat.trim();
-  const lng = req.body.lng.trim();
+  const userId = Number(req.headers["id"]);
+  const name = req.body.nome.toString().trim();
+  const lat = req.body.lat.toString().trim();
+  const lng = req.body.lng.toString().trim();
 
   if (name === "" || lat === "" || lng === "") {
     return res.status(400).json({
@@ -15,20 +15,7 @@ exports.postMarker = async (req, res) => {
     });
   }
 
-  const markerExists = await location.findUnique({
-    where: {
-      lat: lat,
-      lng: lng,
-    },
-  });
-
-  if (markerExists) {
-    return res.status(400).json({
-      msg: "Coordinate già registrate",
-    });
-  }
-
-  await user
+  await prisma.user
     .findUnique({
       where: {
         id: userId,
@@ -39,20 +26,10 @@ exports.postMarker = async (req, res) => {
     })
     .then(async (userExists) => {
       if (userExists) {
-        await location.create({
-          data: {
-            name,
-            lat,
-            lng,
-          },
+        await prisma.location.create({
+          data: { name, lat, lng, userId },
         });
-        res.status(200).json({
-          marker: {
-            name,
-            lat,
-            lng,
-          },
-        });
+        return res.status(200).json({ marker: { name, lat, lng, userId } });
       } else {
         return res.status(404).json({ msg: "Utente non trovato" });
       }
