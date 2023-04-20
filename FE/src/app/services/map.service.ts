@@ -30,7 +30,7 @@ export class MapService {
       : '',
     role: localStorage.getItem('role') ? `${localStorage.getItem('role')}` : '',
   });
-  currentLat: string = '';
+  currentLat: string = '12.34';
   currentLng: string = '';
 
   constructor(private http: HttpClient) {}
