@@ -8,8 +8,7 @@ import { GetDataAuthService } from 'src/app/services/get-data-auth.service';
   styleUrls: ['./admin-page.component.css'],
 })
 export class AdminPageComponent implements OnInit {
-  id: string = '';
-  username: string = '';
+  users: any;
 
   constructor(
     private getDataAuthService: GetDataAuthService,
@@ -17,10 +16,9 @@ export class AdminPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getDataAuthService.isAdmin().subscribe({
+    this.getDataAuthService.getUsers().subscribe({
       next: (res) => {
-        this.id = res.user.id;
-        this.username = res.user.username;
+        this.users = res.users;
       },
       error: (err) => {
         console.log(err);

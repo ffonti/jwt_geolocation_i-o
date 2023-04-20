@@ -1,3 +1,35 @@
-<button class="btn btn-blue" routerLink="/homePage">HomePage</button>
-<p>ID: {{ id }}</p>
-<p>Username: {{ username }}</p>
+<button class="mt-2 ml-2 btn btn-blue" routerLink="/homePage">HomePage</button>
+<div class="ml-2 mt-2 relative overflow-x-auto w-[30%]">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th scope="col" class="px-6 py-3">Username</th>
+        <th scope="col" class="px-6 py-3">Role</th>
+        <th scope="col" class="px-6 py-3">ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let user of users">
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ user.username }}
+          </td>
+          <td
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ user.id }}
+          </td>
+          <td
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ user.role }}
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

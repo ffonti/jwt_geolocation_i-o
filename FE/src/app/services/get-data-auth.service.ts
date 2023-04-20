@@ -31,8 +31,8 @@ export class GetDataAuthService {
     });
   }
 
-  isAdmin(): Observable<any> {
-    return this.http.get('http://localhost:3000/api/v1/adminPage', {
+  getUsers(): Observable<any> {
+    return this.http.get('http://localhost:3000/api/v1/adminPage/users', {
       headers: this.userData,
     });
   }
