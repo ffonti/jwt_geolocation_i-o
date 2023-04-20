@@ -11,6 +11,11 @@ export class AdminPageComponent implements OnInit {
   users: any;
   currentUsers: any;
   index: number = 0;
+  flagUsername: boolean = true;
+  flagId: boolean = true;
+  flagRole: boolean = true;
+  pages: number[] = [];
+  page: number = 0;
 
   constructor(
     private getDataAuthService: GetDataAuthService,
@@ -21,11 +26,17 @@ export class AdminPageComponent implements OnInit {
     this.getDataAuthService.getUsers().subscribe({
       next: (res) => {
         this.users = res.users;
-        this.users.sort((a: { id: number }, b: { id: number }) =>
-          a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+        this.users.sort((a: { role: string }, b: { role: string }) =>
+          a.role > b.role ? 1 : b.role > a.role ? -1 : 0
         );
-        this.currentUsers = this.users.slice(0, 5);
-        console.log(this.index);
+        this.currentUsers = this.users.slice(this.index, this.index + 5);
+        for (
+          let i = 0;
+          i < Math.floor(this.users.length / (this.index + 5)) + 1;
+          i++
+        ) {
+          this.pages.push(i);
+        }
       },
       error: (err) => {
         console.log(err);
@@ -35,14 +46,69 @@ export class AdminPageComponent implements OnInit {
   }
 
   indietro(): void {
-    this.index -= 5;
-    this.currentUsers = this.users.slice(this.index, this.index + 5);
-    console.log(this.index);
+    if (this.index === 0) {
+      this.index = ((this.users.length % 5) + 1) * 5;
+      this.currentUsers = this.users.slice(this.index, this.index + 5);
+    } else {
+      this.index -= 5;
+      this.currentUsers = this.users.slice(this.index, this.index + 5);
+    }
   }
 
   avanti(): void {
-    this.index += 5;
+    if (this.users.length <= this.index + 5) {
+      this.index = 0;
+      this.currentUsers = this.users.slice(this.index, this.index + 5);
+    } else {
+      this.index += 5;
+      this.currentUsers = this.users.slice(this.index, this.index + 5);
+    }
+  }
+
+  invertedUsername(): void {
+    this.flagUsername = !this.flagUsername;
+    if (!this.flagUsername) {
+      this.users.sort((a: { username: string }, b: { username: string }) =>
+        a.username > b.username ? 1 : b.username > a.username ? -1 : 0
+      );
+      this.users.reverse();
+    } else {
+      this.users.reverse();
+    }
+    this.index = 0;
     this.currentUsers = this.users.slice(this.index, this.index + 5);
-    console.log(this.index);
+  }
+
+  invertedId(): void {
+    this.flagId = !this.flagId;
+    if (!this.flagId) {
+      this.users.sort((a: { id: number }, b: { id: number }) =>
+        a.id > b.id ? 1 : b.id > a.id ? -1 : 0
+      );
+      this.users.reverse();
+    } else {
+      this.users.reverse();
+    }
+    this.index = 0;
+    this.currentUsers = this.users.slice(this.index, this.index + 5);
+  }
+
+  invertedRole(): void {
+    this.flagRole = !this.flagRole;
+    if (!this.flagRole) {
+      this.users.sort((a: { role: string }, b: { role: string }) =>
+        a.role > b.role ? 1 : b.role > a.role ? -1 : 0
+      );
+      this.users.reverse();
+    } else {
+      this.users.reverse();
+    }
+    this.index = 0;
+    this.currentUsers = this.users.slice(this.index, this.index + 5);
+  }
+
+  changedIndex(): void {
+    this.index = this.page * 5;
+    this.currentUsers = this.users.slice(this.index, this.index + 5);
   }
 }
