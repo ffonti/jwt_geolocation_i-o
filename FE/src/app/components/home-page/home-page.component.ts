@@ -19,6 +19,7 @@ export class HomePageComponent {
 
   logout(): void {
     localStorage.clear();
+    window.location.pathname = '/login';
   }
 
   toggleModal(): void {
