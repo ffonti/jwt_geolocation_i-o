@@ -1,13 +1,16 @@
 <button class="mt-2 ml-2 btn btn-blue" routerLink="/homePage">HomePage</button>
 
-<select
-  [(ngModel)]="page"
-  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[20%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
->
-  <ng-container *ngFor="let page of pages">
-    <option (click)="changedIndex()" [value]="page">{{ page + 1 }}</option>
-  </ng-container>
-</select>
+<div class="text-center">
+  <select
+    [(ngModel)]="page"
+    class="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-[10%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  >
+    <ng-container *ngFor="let page of pages">
+      <option (click)="changedIndex()" [value]="page">{{ page + 1 }}</option>
+    </ng-container>
+  </select>
+  <p>Pagina {{ page2 }} di {{ pages.length }}</p>
+</div>
 
 <div class="grid grid-cols-12 w-[100%] mt-[3%]">
   <div class="col-span-3">
@@ -157,7 +160,8 @@
         <ng-container *ngFor="let user of currentUsers">
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <td
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              (click)="showMarkers(user)"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
             >
               {{ user.username }}
             </td>
@@ -197,4 +201,9 @@
       </svg>
     </div>
   </div>
+</div>
+<div>
+  <ng-container *ngIf="showMarker">
+    <p>{{ currentUserMarkers }}</p>
+  </ng-container>
 </div>

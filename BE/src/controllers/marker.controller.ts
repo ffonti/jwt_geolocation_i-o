@@ -35,3 +35,17 @@ exports.postMarker = async (req, res) => {
       }
     });
 };
+
+exports.getMarkers = async (req, res) => {
+  const searchId = req.params.id;
+  const markers = await prisma.location.findMany({
+    where: { userId: +searchId },
+    select: {
+      id: true,
+      name: true,
+      lat: true,
+      lng: true,
+    },
+  });
+  return res.status(200).json({ markers });
+};

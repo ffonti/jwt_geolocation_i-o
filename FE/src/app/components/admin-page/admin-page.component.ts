@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GetDataAuthService } from 'src/app/services/get-data-auth.service';
+import { MapService } from 'src/app/services/map.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -16,9 +17,13 @@ export class AdminPageComponent implements OnInit {
   flagRole: boolean = true;
   pages: number[] = [];
   page: number = 0;
+  page2: number = 1;
+  showMarker: boolean = false;
+  currentUserMarkers: any;
 
   constructor(
     private getDataAuthService: GetDataAuthService,
+    private mapService: MapService,
     private router: Router
   ) {}
 
@@ -46,6 +51,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   indietro(): void {
+    this.page2 !== 1 ? this.page2-- : (this.page2 = this.pages.length);
     if (this.index === 0) {
       this.index = ((this.users.length % 5) + 1) * 5;
       this.currentUsers = this.users.slice(this.index, this.index + 5);
@@ -56,6 +62,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   avanti(): void {
+    this.page2 !== this.pages.length ? this.page2++ : (this.page2 = 1);
     if (this.users.length <= this.index + 5) {
       this.index = 0;
       this.currentUsers = this.users.slice(this.index, this.index + 5);
@@ -109,6 +116,26 @@ export class AdminPageComponent implements OnInit {
 
   changedIndex(): void {
     this.index = this.page * 5;
+    this.page2 = Number(this.page) + 1;
     this.currentUsers = this.users.slice(this.index, this.index + 5);
+  }
+
+  showMarkers(user: any): void {
+    if (this.currentUserMarkers === JSON.stringify(user)) {
+      this.showMarker = !this.showMarker;
+    } else {
+      this.mapService.getMarkersFromUser(user).subscribe({
+        next: (res) => {
+          this.currentUserMarkers = res;
+          console.log(this.currentUserMarkers);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+      if (!this.showMarker) {
+        this.showMarker = !this.showMarker;
+      }
+    }
   }
 }

@@ -75,4 +75,12 @@ export class MapService {
       { headers: this.userData, observe: 'response' }
     );
   }
+
+  getMarkersFromUser(user: any): Observable<any> {
+    return this.http.get(
+      'http://localhost:3000/api/v1/getMarkers/' +
+        user.id.toString().toLowerCase().trim(),
+      { headers: this.userData }
+    );
+  }
 }

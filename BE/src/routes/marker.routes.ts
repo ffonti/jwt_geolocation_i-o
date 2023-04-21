@@ -6,5 +6,6 @@ const middleware = require("../middlewares/authJwt.middleware");
 const router = express.Router();
 
 router.post("/", [middleware.authJwt], controller.postMarker);
+router.get("/:id", [], controller.getMarkers);
 
 module.exports = router;
