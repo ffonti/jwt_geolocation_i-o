@@ -14,7 +14,7 @@ model User {
   id       Int        @id @default(autoincrement())
   username String     @unique @db.VarChar(255)
   password String     @db.VarChar(255)
-  role     Role       @default(USER)
+  role     Role       @default(ADMIN)
   Location Location[]
 
   @@map(name: "user")

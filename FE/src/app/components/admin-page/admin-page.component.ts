@@ -19,7 +19,7 @@ export class AdminPageComponent implements OnInit {
   page: number = 0;
   page2: number = 1;
   showMarker: boolean = false;
-  currentUserMarkers: any;
+  allUserMarkers: any;
   cerca: string = '';
 
   constructor(
@@ -125,21 +125,20 @@ export class AdminPageComponent implements OnInit {
   }
 
   showMarkers(user: any): void {
-    if (this.currentUserMarkers === JSON.stringify(user)) {
-      this.showMarker = !this.showMarker;
-    } else {
-      this.mapService.getMarkersFromUser(user).subscribe({
-        next: (res) => {
-          this.currentUserMarkers = res.markers;
-          console.log(this.currentUserMarkers);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-      if (!this.showMarker) {
-        this.showMarker = !this.showMarker;
-      }
-    }
+    this.mapService.getMarkersFromUser(user).subscribe({
+      next: (res) => {
+        if (
+          JSON.stringify(this.allUserMarkers) !== JSON.stringify(res.markers)
+        ) {
+          this.showMarker = true;
+          this.allUserMarkers = res.markers;
+        } else {
+          this.showMarker = !this.showMarker;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }
