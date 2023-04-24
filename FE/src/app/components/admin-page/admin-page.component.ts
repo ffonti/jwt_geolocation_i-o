@@ -20,6 +20,7 @@ export class AdminPageComponent implements OnInit {
   page2: number = 1;
   showMarker: boolean = false;
   currentUserMarkers: any;
+  cerca: string = '';
 
   constructor(
     private getDataAuthService: GetDataAuthService,
@@ -82,6 +83,7 @@ export class AdminPageComponent implements OnInit {
     } else {
       this.users.reverse();
     }
+    this.page2 = 1;
     this.index = 0;
     this.currentUsers = this.users.slice(this.index, this.index + 5);
   }
@@ -96,6 +98,7 @@ export class AdminPageComponent implements OnInit {
     } else {
       this.users.reverse();
     }
+    this.page2 = 1;
     this.index = 0;
     this.currentUsers = this.users.slice(this.index, this.index + 5);
   }
@@ -110,6 +113,7 @@ export class AdminPageComponent implements OnInit {
     } else {
       this.users.reverse();
     }
+    this.page2 = 1;
     this.index = 0;
     this.currentUsers = this.users.slice(this.index, this.index + 5);
   }
@@ -126,7 +130,7 @@ export class AdminPageComponent implements OnInit {
     } else {
       this.mapService.getMarkersFromUser(user).subscribe({
         next: (res) => {
-          this.currentUserMarkers = res;
+          this.currentUserMarkers = res.markers;
           console.log(this.currentUserMarkers);
         },
         error: (err) => {
