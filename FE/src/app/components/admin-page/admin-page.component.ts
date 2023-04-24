@@ -15,12 +15,14 @@ export class AdminPageComponent implements OnInit {
   flagUsername: boolean = true;
   flagId: boolean = true;
   flagRole: boolean = true;
+  flagDate: boolean = true;
   pages: number[] = [];
   page: number = 0;
   page2: number = 1;
   showMarker: boolean = false;
   allUserMarkers: any;
   cerca: string = '';
+  cercaPerData: string = '';
 
   constructor(
     private getDataAuthService: GetDataAuthService,
@@ -32,6 +34,9 @@ export class AdminPageComponent implements OnInit {
     this.getDataAuthService.getUsers().subscribe({
       next: (res) => {
         this.users = res.users;
+        for (let user of this.users) {
+          user.data_nascita = user.data_nascita.substring(0, 10).toString();
+        }
         this.users.sort((a: { role: string }, b: { role: string }) =>
           a.role > b.role ? 1 : b.role > a.role ? -1 : 0
         );
@@ -108,6 +113,26 @@ export class AdminPageComponent implements OnInit {
     if (!this.flagRole) {
       this.users.sort((a: { role: string }, b: { role: string }) =>
         a.role > b.role ? 1 : b.role > a.role ? -1 : 0
+      );
+      this.users.reverse();
+    } else {
+      this.users.reverse();
+    }
+    this.page2 = 1;
+    this.index = 0;
+    this.currentUsers = this.users.slice(this.index, this.index + 5);
+  }
+
+  invertedDate(): void {
+    this.flagDate = !this.flagDate;
+    if (!this.flagDate) {
+      this.users.sort(
+        (a: { data_nascita: string }, b: { data_nascita: string }) =>
+          a.data_nascita > b.data_nascita
+            ? 1
+            : b.data_nascita > a.data_nascita
+            ? -1
+            : 0
       );
       this.users.reverse();
     } else {

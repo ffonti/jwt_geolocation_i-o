@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id       Int        @id @default(autoincrement())
-  username String     @unique @db.VarChar(255)
-  password String     @db.VarChar(255)
-  role     Role       @default(ADMIN)
-  Location Location[]
+  id           Int        @id @default(autoincrement())
+  username     String     @unique @db.VarChar(255)
+  password     String     @db.VarChar(255)
+  data_nascita DateTime   @default(now()) @db.Date
+  role         Role       @default(ADMIN)
+  Location     Location[]
 
   @@map(name: "user")
 }

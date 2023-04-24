@@ -18,6 +18,7 @@ exports.getUsers = async (req, res) => {
       id: true,
       username: true,
       role: true,
+      data_nascita: true,
     },
   });
   return res.status(200).json({ users });
