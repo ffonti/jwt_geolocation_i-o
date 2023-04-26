@@ -22,7 +22,7 @@ export class AdminPageComponent implements OnInit {
   showMarker: boolean = false;
   allUserMarkers: any;
   cerca: string = '';
-  cercaPerData: string = '';
+  data: string = '';
 
   constructor(
     private getDataAuthService: GetDataAuthService,
