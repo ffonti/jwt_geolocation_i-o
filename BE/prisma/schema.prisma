@@ -17,6 +17,7 @@ model User {
   data_nascita DateTime   @default(now()) @db.Date
   role         Role       @default(ADMIN)
   Location     Location[]
+  File         File[]
 
   @@map(name: "user")
 }
@@ -46,6 +47,25 @@ model Location {
 
   @@map(name: "location")
 }
+
+model File {
+  id          Int      @id @default(autoincrement())
+  path        String   @db.VarChar(500)
+  name        String   @db.VarChar(30)
+  uploaded_at DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+
+  @@map(name: "file")
+}
+
+//console log dell'input type="file"
+//(change)=onFileSelected($event)
+//event.target.file
+// 
+//
+// bottone che carica sul backend: 
+// formdata = new FormData()
 
 enum Role {
   USER

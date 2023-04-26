@@ -42,7 +42,7 @@
     <p class="ml-[25%]">Pagina {{ page2 }} di {{ pages.length }}</p>
   </div>
   <div>
-    <input type="date" />
+    <input type="date" [(ngModel)]="data" />
   </div>
 </div>
 
@@ -239,13 +239,14 @@
       <tbody>
         <ng-container *ngFor="let user of currentUsers">
           <ng-container
-            *ngIf="user.username.includes(cerca.trim().toLowerCase())"
-          >
-            <!-- ||
+            *ngIf="
+              user.username.includes(cerca.trim().toLowerCase()) &&
               user.data_nascita
                 .toString()
                 .trim()
-                .includes(data.toString().trim()) -->
+                .includes(data.toString().trim())
+            "
+          >
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <td
                 (click)="showMarkers(user)"
@@ -266,7 +267,7 @@
               <td
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
-                {{ user.data_nascita }}
+                {{ user.data_nascita | date : "dd/MM/yyyy" }}
               </td>
             </tr>
           </ng-container>

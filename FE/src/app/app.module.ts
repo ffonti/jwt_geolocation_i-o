@@ -12,6 +12,7 @@ import { ColoriComponent } from './components/colori/colori.component';
 import { NomiComponent } from './components/nomi/nomi.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { MapComponent } from './components/map/map.component';
+import { UploadComponent } from './components/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MapComponent } from './components/map/map.component';
     NomiComponent,
     AdminPageComponent,
     MapComponent,
+    UploadComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
