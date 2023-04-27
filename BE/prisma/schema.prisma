@@ -59,14 +59,6 @@ model File {
   @@map(name: "file")
 }
 
-//console log dell'input type="file"
-//(change)=onFileSelected($event)
-//event.target.file
-// 
-//
-// bottone che carica sul backend: 
-// formdata = new FormData()
-
 enum Role {
   USER
   ADMIN

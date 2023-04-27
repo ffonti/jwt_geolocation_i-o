@@ -19,6 +19,7 @@ app.use("/api/v1/homePage", require("./routes/homePage.routes"));
 app.use("/api/v1/adminPage", require("./routes/adminPage.routes"));
 app.use("/api/v1/saveMarker", require("./routes/marker.routes"));
 app.use("/api/v1/getMarkers", require("./routes/marker.routes"));
+app.use("/api/v1/uploadFile", require("./routes/upload.routes"));
 
 app.listen(process.env.PORT, () => {
   console.log("Listening on port " + process.env.PORT);

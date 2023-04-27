@@ -1,1 +1,16 @@
-<p>upload works!</p>
+<button class="btn btn-blue" routerLink="/homePage">HomePage</button>
+<br />
+<input
+  type="file"
+  style="display: none"
+  (change)="onFileSelected($event)"
+  #fileInput
+  multiple
+/>
+<button type="button" class="btn btn-blue" (click)="fileInput.click()">
+  Scegli un file
+</button>
+<button type="button" class="btn btn-blue" (click)="onUpload()">
+  Upload file
+</button>
+<ng-container *ngFor="let u of uploadProgress">{{ u }}</ng-container>
