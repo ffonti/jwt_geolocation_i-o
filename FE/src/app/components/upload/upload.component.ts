@@ -21,9 +21,10 @@ export class UploadComponent {
 
   onUpload(): void {
     const formdata = new FormData();
+
     if (this.selectedFile != undefined) {
       for (let file of this.selectedFile) {
-        formdata.append('documents', file);
+        formdata.append('documents', file, file.name);
       }
     }
 

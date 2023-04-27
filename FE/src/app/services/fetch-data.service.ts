@@ -42,10 +42,9 @@ export class FetchDataService {
   }
 
   upload(formdata: FormData): Observable<any> {
-    return this.http.post(
-      'http://localhost:3000/api/v1/uploadFile',
-      { formdata },
-      { reportProgress: true, observe: 'response' }
-    );
+    return this.http.post('http://localhost:3000/api/v1/uploadFile', formdata, {
+      reportProgress: true,
+      observe: 'response',
+    });
   }
 }

@@ -1,5 +1,3 @@
 exports.uploadFile = async (req, res) => {
-  console.log(req.body);
-
   res.status(200).json({ msg: "File caricato!" });
 };
