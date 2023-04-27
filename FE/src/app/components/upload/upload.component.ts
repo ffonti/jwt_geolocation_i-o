@@ -1,6 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FetchDataService } from 'src/app/services/fetch-data.service';
+import * as fs from 'file-saver';
 
 @Component({
   selector: 'app-upload',
@@ -10,12 +11,25 @@ import { FetchDataService } from 'src/app/services/fetch-data.service';
 export class UploadComponent {
   selectedFile: File[] = [];
   uploadProgress: string[] = [];
+  viewFiles: boolean = false;
 
   constructor(private fetchData: FetchDataService) {}
 
   onFileSelected(event: any): void {
     for (let file of event.target.files) {
-      this.selectedFile.push(file);
+      if (file.size > 10000000) {
+        console.log('Dimensione massima 10MB');
+        event.target.value = '';
+        this.selectedFile = [];
+      } else if (
+        !file.name.includes('.pdf') &&
+        !file.name.includes('.docx') &&
+        !file.name.includes('.jpg')
+      ) {
+        console.log('Inserire solo .pdf o .docx o .jpg');
+      } else {
+        this.selectedFile.push(file);
+      }
     }
   }
 
@@ -49,11 +63,28 @@ export class UploadComponent {
         console.log(err);
       },
     });
+    this.selectedFile = [];
   }
 
   removeFile(event: any): void {
     this.selectedFile = this.selectedFile.filter((file) => {
       return file.name != event.target.innerText;
     });
+  }
+
+  getFiles(): void {
+    if (!this.viewFiles) {
+      this.viewFiles = !this.viewFiles;
+      this.fetchData.getFiles().subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      this.viewFiles = !this.viewFiles;
+    }
   }
 }

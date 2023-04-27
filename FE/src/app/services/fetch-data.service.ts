@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,6 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class FetchDataService {
+  userData = new HttpHeaders({
+    'x-access-token': localStorage.getItem('token')
+      ? `${localStorage.getItem('token')}`
+      : '',
+    id: localStorage.getItem('id') ? `${localStorage.getItem('id')}` : '',
+    username: localStorage.getItem('username')
+      ? `${localStorage.getItem('username')}`
+      : '',
+    role: localStorage.getItem('role') ? `${localStorage.getItem('role')}` : '',
+  });
+
   constructor(private http: HttpClient) {}
 
   register(username: string, password: string): Observable<any> {
@@ -45,6 +56,12 @@ export class FetchDataService {
     return this.http.post('http://localhost:3000/api/v1/uploadFile', formdata, {
       reportProgress: true,
       observe: 'response',
+    });
+  }
+
+  getFiles(): Observable<any> {
+    return this.http.get('http://localhost:3000/api/v1/uploadFile/getFiles', {
+      headers: this.userData,
     });
   }
 }

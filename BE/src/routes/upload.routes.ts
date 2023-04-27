@@ -7,5 +7,6 @@ const upload = multer({ dest: "./assets/uploads/" });
 const router = express.Router();
 
 router.post("/", upload.array("documents"), [], controller.uploadFile);
+router.get("/getFiles", [], controller.getFiles);
 
 module.exports = router;

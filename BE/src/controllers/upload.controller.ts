@@ -1,34 +1,39 @@
+import { PrismaClient } from "@prisma/client";
 import * as fs from "fs";
+const prisma = new PrismaClient();
 
 exports.uploadFile = async (req, res) => {
-  if (!fs.existsSync("assets/uploads")) {
+  const userId = req.headers["id"];
+
+  if (!fs.existsSync("./assets/uploads")) {
     fs.mkdirSync("./assets/uploads/");
   }
 
   for (let i = 0; i < req.files.length; i++) {
-    console.log(req.files[i].originalname);
+    fs.rename(
+      "./assets/uploads/" + req.files[i].filename,
+      "./assets/uploads/" + req.files[i].originalname,
+      (err) => {
+        console.log(err);
+      }
+    );
+    await prisma.file.create({
+      data: {
+        encoded_name: req.files[i].filename.toString(),
+        original_name: req.files[i].originalname.toString(),
+        userId: userId,
+      },
+    });
   }
 
-  res.status(200).json({ msg: "File caricato!" });
+  res.status(200).json({ msg: "Caricamento completato!" });
 };
 
-/*
-salvare sul db:
-  nome_fico.estensione (flower)
-  nome_brutto (codice lungo)
-  idUtente
------------
-fs.existSync -> controlla se esiste o no una cartella
-devo constrollare che esista assets/uploads
-  se non esiste, faccio fs.mkdirSync() crea la cartella
-fra le opzioni, c'è recursiveTrue e la metto sempre a false????
------------
-scorro tutti i files e faccio un fs.rename('./assets/uploads/nome_brutto', './assets/uploads/nome_fico', (err)=>{console.log(err)}) e metto il nome originale
------------
-controlli vari:
-  si pdf, jpg, png e no a tutti gli altri
-  dim max 10mb
-*/
-/*
+exports.getFiles = async (req, res) => {
+  res.status(200).download("./assets/uploads/flower.jpg");
+};
+
+/*salvare sul db i dati
+------------------------------------------
 nel route, il file viene messo nella cartella ancora prima di passare al controller
 */

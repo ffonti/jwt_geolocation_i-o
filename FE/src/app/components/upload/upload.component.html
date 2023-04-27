@@ -22,3 +22,7 @@
     </tr>
   </ng-container>
 </table>
+<button type="button" class="btn btn-blue" (click)="getFiles()">
+  View Files
+</button>
+<ng-container *ngIf="viewFiles"><p>files</p></ng-container>
