@@ -13,4 +13,12 @@
 <button type="button" class="btn btn-blue" (click)="onUpload()">
   Upload file
 </button>
-<ng-container *ngFor="let u of uploadProgress">{{ u }}</ng-container>
+<table class="table-auto border-solid border-2 border-sky-500">
+  <ng-container *ngFor="let file of selectedFile">
+    <tr class="border-solid border-2 border-sky-500">
+      <td (click)="removeFile($event)" class="cursor-pointer">
+        {{ file.name }}
+      </td>
+    </tr>
+  </ng-container>
+</table>

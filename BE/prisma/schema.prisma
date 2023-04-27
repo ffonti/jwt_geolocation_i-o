@@ -49,12 +49,12 @@ model Location {
 }
 
 model File {
-  id          Int      @id @default(autoincrement())
-  path        String   @db.VarChar(500)
-  name        String   @db.VarChar(30)
-  uploaded_at DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
+  id            Int      @id @default(autoincrement())
+  encoded_name  String   @db.VarChar(100)
+  original_name String   @db.VarChar(100)
+  uploaded_at   DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        Int
 
   @@map(name: "file")
 }

@@ -50,4 +50,10 @@ export class UploadComponent {
       },
     });
   }
+
+  removeFile(event: any): void {
+    this.selectedFile = this.selectedFile.filter((file) => {
+      return file.name != event.target.innerText;
+    });
+  }
 }
