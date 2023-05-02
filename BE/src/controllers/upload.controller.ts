@@ -39,5 +39,35 @@ exports.uploadFile = async (req, res) => {
 };
 
 exports.getFiles = async (req, res) => {
-  res.status(200).download("./assets/uploads/flower.jpg");
+  const userId = Number(req.headers["id"]);
+
+  const fileNames = await prisma.file.findMany({
+    where: {
+      userId: userId,
+    },
+    select: {
+      original_name: true,
+    },
+  });
+  if (fileNames) {
+    return res.status(200).json({ fileNames });
+  } else {
+    return res.status(400).json({ msg: "Non ci sono file" });
+  }
+};
+
+exports.download = async (req, res) => {
+  const fileName = req.params.name;
+
+  const file = await prisma.file.findFirst({
+    where: {
+      original_name: fileName,
+    },
+  });
+
+  if (file) {
+    return res.status(200).download("./assets/uploads/" + fileName);
+  } else {
+    return res.status(400).json({ msg: "File non trovato!" });
+  }
 };
