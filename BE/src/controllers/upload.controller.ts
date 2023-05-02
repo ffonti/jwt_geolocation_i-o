@@ -5,14 +5,22 @@ const prisma = new PrismaClient();
 exports.uploadFile = async (req, res) => {
   const userId = Number(req.headers["id"]);
 
-  if (!fs.existsSync("./assets/uploads")) {
-    fs.mkdirSync("./assets/uploads/");
+  if (!fs.existsSync("./assets/uploads/" + userId.toString().trim() + "/")) {
+    fs.mkdirSync("./assets/uploads/" + userId.toString().trim() + "/");
   }
 
   for (let i = 0; i < req.files.length; i++) {
+    req.files[i].originalname = Buffer.from(
+      req.files[i].originalname,
+      "latin1"
+    ).toString("utf8");
+
     fs.rename(
       "./assets/uploads/" + req.files[i].filename,
-      "./assets/uploads/" + req.files[i].originalname,
+      "./assets/uploads/" +
+        userId.toString().trim() +
+        "/" +
+        req.files[i].originalname,
       (err) => {
         console.log(err);
       }
@@ -56,14 +64,19 @@ exports.getFiles = async (req, res) => {
   }
 };
 
-exports.download = async (req, res) => {
+export const download = async (req, res) => {
   const fileName = req.params.name;
 
-  const file = await prisma.file.findFirst({
-    where: {
-      original_name: fileName,
-    },
-  });
+  const file = await prisma.file
+    .findFirst({
+      where: {
+        original_name: fileName,
+      },
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json({ msg: "errore ooooo" });
+    });
 
   if (file) {
     return res.status(200).download("./assets/uploads/" + fileName);
