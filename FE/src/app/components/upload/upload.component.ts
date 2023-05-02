@@ -11,7 +11,11 @@ import * as fs from 'file-saver';
 export class UploadComponent {
   selectedFile: File[] = [];
   uploadProgress: string[] = [];
-  viewFiles: boolean = false;
+  viewNames: boolean = false;
+  fileNames: { original_name: string }[] = [];
+  viewSelectedFile: boolean = false;
+  name: string = '';
+  file?: Blob;
 
   constructor(private fetchData: FetchDataService) {}
 
@@ -72,19 +76,41 @@ export class UploadComponent {
     });
   }
 
-  getFiles(): void {
-    if (!this.viewFiles) {
-      this.viewFiles = !this.viewFiles;
-      this.fetchData.getFiles().subscribe({
-        next: (res) => {
-          console.log(res);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+  getFileNames(): void {
+    if (!this.viewNames) {
+      this.viewNames = !this.viewNames;
+      if (!this.fileNames.length) {
+        this.fetchData.getFileNames().subscribe({
+          next: (res) => {
+            this.fileNames = res.body.fileNames;
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+      }
     } else {
-      this.viewFiles = !this.viewFiles;
+      this.viewNames = !this.viewNames;
     }
+  }
+
+  viewFile(event: any): void {
+    if (this.name !== event.target.innerText) {
+      this.name = event.target.innerText;
+      this.viewSelectedFile = true;
+    } else {
+      this.viewSelectedFile = !this.viewSelectedFile;
+    }
+  }
+
+  downloadFile(): void {
+    this.fetchData.downloadFile(this.name).subscribe({
+      next: (res) => {
+        fs.saveAs(res.body, this.name);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

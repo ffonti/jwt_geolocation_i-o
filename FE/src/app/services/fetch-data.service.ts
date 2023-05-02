@@ -55,13 +55,22 @@ export class FetchDataService {
   upload(formdata: FormData): Observable<any> {
     return this.http.post('http://localhost:3000/api/v1/uploadFile', formdata, {
       reportProgress: true,
+      headers: this.userData,
       observe: 'response',
     });
   }
 
-  getFiles(): Observable<any> {
+  getFileNames(): Observable<any> {
     return this.http.get('http://localhost:3000/api/v1/uploadFile/getFiles', {
       headers: this.userData,
+      observe: 'response',
     });
+  }
+
+  downloadFile(name: string): Observable<any> {
+    return this.http.get(
+      'http://localhost:3000/api/v1/uploadFile/getFiles/' + name,
+      { observe: 'response', responseType: 'blob' }
+    );
   }
 }

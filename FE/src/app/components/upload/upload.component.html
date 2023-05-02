@@ -22,7 +22,21 @@
     </tr>
   </ng-container>
 </table>
-<button type="button" class="btn btn-blue" (click)="getFiles()">
-  View Files
+<button type="button" class="btn btn-blue" (click)="getFileNames()">
+  View File Names
 </button>
-<ng-container *ngIf="viewFiles"><p>files</p></ng-container>
+<ng-container *ngIf="viewNames">
+  <table class="table-auto border-solid border-2 border-sky-500">
+    <ng-container *ngFor="let name of fileNames">
+      <tr class="border-solid border-2 border-sky-500">
+        <td (click)="viewFile($event)" class="cursor-pointer">
+          {{ name.original_name }}
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+</ng-container>
+<ng-container *ngIf="viewSelectedFile">
+  <p>{{ name }}</p>
+  <button class="btn btn-blue" (click)="downloadFile()">Download</button>
+</ng-container>
