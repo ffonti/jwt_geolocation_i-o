@@ -3,7 +3,7 @@ import * as fs from "fs";
 const prisma = new PrismaClient();
 
 exports.uploadFile = async (req, res) => {
-  const userId = req.headers["id"];
+  const userId = Number(req.headers["id"]);
 
   if (!fs.existsSync("./assets/uploads")) {
     fs.mkdirSync("./assets/uploads/");
@@ -17,13 +17,22 @@ exports.uploadFile = async (req, res) => {
         console.log(err);
       }
     );
-    await prisma.file.create({
-      data: {
-        encoded_name: req.files[i].filename.toString(),
-        original_name: req.files[i].originalname.toString(),
-        userId: userId,
-      },
-    });
+
+    let encoded_name = req.files[i].filename.toString();
+    let original_name = req.files[i].originalname.toString();
+
+    await prisma.file
+      .create({
+        data: {
+          encoded_name: encoded_name,
+          original_name: original_name,
+          userId: userId,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(400).json({ msg: "Erorre!" });
+      });
   }
 
   res.status(200).json({ msg: "Caricamento completato!" });
@@ -32,8 +41,3 @@ exports.uploadFile = async (req, res) => {
 exports.getFiles = async (req, res) => {
   res.status(200).download("./assets/uploads/flower.jpg");
 };
-
-/*salvare sul db i dati
-------------------------------------------
-nel route, il file viene messo nella cartella ancora prima di passare al controller
-*/
