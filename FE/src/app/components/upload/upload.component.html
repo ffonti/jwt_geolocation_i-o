@@ -10,7 +10,12 @@
 <button type="button" class="btn btn-blue" (click)="fileInput.click()">
   Scegli un file
 </button>
-<button type="button" class="btn btn-blue" (click)="onUpload()">
+<button
+  type="button"
+  class="btn btn-blue"
+  (click)="onUpload()"
+  [disabled]="fileExists"
+>
   Upload file
 </button>
 <table class="table-auto border-solid border-2 border-sky-500">
@@ -30,7 +35,7 @@
     <ng-container *ngFor="let name of fileNames">
       <tr class="border-solid border-2 border-sky-500">
         <td (click)="viewFile($event)" class="cursor-pointer">
-          {{ name.original_name }}
+          {{ name }}
         </td>
       </tr>
     </ng-container>
@@ -39,4 +44,5 @@
 <ng-container *ngIf="viewSelectedFile">
   <p>{{ name }}</p>
   <button class="btn btn-blue" (click)="downloadFile()">Download</button>
+  <button class="btn btn-blue" (click)="deleteFile()">Delete</button>
 </ng-container>

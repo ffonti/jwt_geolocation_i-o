@@ -9,5 +9,6 @@ const router = express.Router();
 router.post("/", upload.array("documents"), [], controller.uploadFile);
 router.get("/getFiles", [], controller.getFiles);
 router.get("/getFiles/:name", [], controller.download);
+router.delete("/deleteFile/:name", [], controller.deleteFile);
 
 module.exports = router;

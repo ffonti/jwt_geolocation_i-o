@@ -5,6 +5,19 @@ const prisma = new PrismaClient();
 exports.uploadFile = async (req, res) => {
   const userId = Number(req.headers["id"]);
 
+  // const userImgs = await prisma.file.findMany({
+  //   select: {
+  //     original_name: true,
+  //   },
+  //   where: {
+  //     userId: userId,
+  //   },
+  // });
+
+  // if(!userImgs) {
+
+  // }
+
   if (!fs.existsSync("./assets/uploads/" + userId.toString().trim() + "/")) {
     fs.mkdirSync("./assets/uploads/" + userId.toString().trim() + "/");
   }
@@ -65,6 +78,7 @@ exports.getFiles = async (req, res) => {
 };
 
 export const download = async (req, res) => {
+  const userId = Number(req.headers["id"]);
   const fileName = req.params.name;
 
   const file = await prisma.file
@@ -79,8 +93,43 @@ export const download = async (req, res) => {
     });
 
   if (file) {
-    return res.status(200).download("./assets/uploads/" + fileName);
+    return res
+      .status(200)
+      .download("./assets/uploads/" + userId + "/" + fileName);
   } else {
     return res.status(400).json({ msg: "File non trovato!" });
   }
+};
+
+export const deleteFile = async (req, res) => {
+  const userId = Number(req.headers["id"]);
+  const fileName = req.params.name;
+
+  const file = await prisma.file
+    .findFirst({
+      select: {
+        id: true,
+      },
+      where: {
+        userId: userId,
+        original_name: fileName,
+      },
+    })
+    .catch((err) => {
+      return res.status(404).json({ msg: "File non trovato!" });
+    });
+
+  await prisma.file
+    .delete({
+      where: {
+        id: file.id,
+      },
+    })
+    .catch((err) => {
+      return res.status(400).json({ msg: err });
+    });
+
+  fs.rmSync("./assets/uploads/" + userId + "/" + fileName);
+
+  return res.status(200).json({ msg: "File eliminato con successo" });
 };

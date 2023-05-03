@@ -1,5 +1,5 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FetchDataService } from 'src/app/services/fetch-data.service';
 import * as fs from 'file-saver';
 
@@ -8,16 +8,31 @@ import * as fs from 'file-saver';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css'],
 })
-export class UploadComponent {
+export class UploadComponent implements OnInit {
   selectedFile: File[] = [];
   uploadProgress: string[] = [];
   viewNames: boolean = false;
-  fileNames: { original_name: string }[] = [];
+  fileNames: string[] = [];
   viewSelectedFile: boolean = false;
   name: string = '';
   file?: Blob;
+  fileExists: boolean = false;
 
   constructor(private fetchData: FetchDataService) {}
+
+  ngOnInit(): void {
+    this.fileNames = [];
+    this.fetchData.getFileNames().subscribe({
+      next: (res) => {
+        for (let name of res.body.fileNames) {
+          this.fileNames.push(name.original_name);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 
   onFileSelected(event: any): void {
     for (let file of event.target.files) {
@@ -31,6 +46,8 @@ export class UploadComponent {
         !file.name.includes('.jpg')
       ) {
         console.log('Inserire solo .pdf o .docx o .jpg');
+      } else if (this.fileNames.includes(file.name)) {
+        console.log('Esiste già un file con questo nome');
       } else {
         this.selectedFile.push(file);
       }
@@ -43,6 +60,7 @@ export class UploadComponent {
     if (this.selectedFile != undefined) {
       for (let file of this.selectedFile) {
         formdata.append('documents', file, file.name);
+        this.fileNames.push(file.name);
       }
     }
 
@@ -77,21 +95,8 @@ export class UploadComponent {
   }
 
   getFileNames(): void {
-    if (!this.viewNames) {
-      this.viewNames = !this.viewNames;
-      if (!this.fileNames.length) {
-        this.fetchData.getFileNames().subscribe({
-          next: (res) => {
-            this.fileNames = res.body.fileNames;
-          },
-          error: (err) => {
-            console.log(err);
-          },
-        });
-      }
-    } else {
-      this.viewNames = !this.viewNames;
-    }
+    this.viewNames = !this.viewNames;
+    this.viewSelectedFile = false;
   }
 
   viewFile(event: any): void {
@@ -113,4 +118,26 @@ export class UploadComponent {
       },
     });
   }
+
+  deleteFile(): void {
+    this.fetchData.deleteFile(this.name).subscribe({
+      next: (res) => {
+        console.log(res);
+        let index = this.fileNames.indexOf(this.name);
+        if (index !== -1) {
+          this.fileNames.splice(index, 1);
+        }
+        this.viewSelectedFile = false;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 }
+//cartelle custom per user
+
+//fe vedere se l'utente ha già un file con questo nome
+//be query con userid e nome e vedere se è vuoto
+
+//eliminazione immagini

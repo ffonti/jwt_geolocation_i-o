@@ -70,7 +70,17 @@ export class FetchDataService {
   downloadFile(name: string): Observable<any> {
     return this.http.get(
       'http://localhost:3000/api/v1/uploadFile/getFiles/' + name,
-      { observe: 'response', responseType: 'blob' }
+      { headers: this.userData, observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  deleteFile(name: string): Observable<any> {
+    return this.http.delete(
+      'http://localhost:3000/api/v1/uploadFile/deleteFile/' + name,
+      {
+        headers: this.userData,
+        observe: 'response',
+      }
     );
   }
 }
