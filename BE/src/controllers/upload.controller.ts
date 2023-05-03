@@ -5,24 +5,26 @@ const prisma = new PrismaClient();
 exports.uploadFile = async (req, res) => {
   const userId = Number(req.headers["id"]);
 
-  // const userImgs = await prisma.file.findMany({
-  //   select: {
-  //     original_name: true,
-  //   },
-  //   where: {
-  //     userId: userId,
-  //   },
-  // });
-
-  // if(!userImgs) {
-
-  // }
+  const userImgs = await prisma.file.findMany({
+    select: {
+      original_name: true,
+    },
+    where: {
+      userId: userId,
+    },
+  });
 
   if (!fs.existsSync("./assets/uploads/" + userId.toString().trim() + "/")) {
     fs.mkdirSync("./assets/uploads/" + userId.toString().trim() + "/");
   }
 
   for (let i = 0; i < req.files.length; i++) {
+    if (userImgs.includes(req.files[i])) {
+      return res
+        .status(400)
+        .json({ msg: "Esiste già un immagine con questo nome!" });
+    }
+
     req.files[i].originalname = Buffer.from(
       req.files[i].originalname,
       "latin1"
