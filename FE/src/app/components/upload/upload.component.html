@@ -10,25 +10,16 @@
 <button type="button" class="btn btn-blue" (click)="fileInput.click()">
   Scegli un file
 </button>
-<button
+<!-- <button
   type="button"
   class="btn btn-blue"
   (click)="onUpload()"
   [disabled]="fileExists"
 >
   Upload file
-</button>
-<table class="table-auto border-solid border-2 border-sky-500">
-  <ng-container *ngFor="let file of selectedFile">
-    <tr class="border-solid border-2 border-sky-500">
-      <td (click)="removeFile($event)" class="cursor-pointer">
-        {{ file.name }}
-      </td>
-    </tr>
-  </ng-container>
-</table>
+</button> -->
 <button type="button" class="btn btn-blue" (click)="getFileNames()">
-  View File Names
+  {{ viewNames ? "Nascondi" : "Mostra" }} i nomi dei file
 </button>
 <ng-container *ngIf="viewNames">
   <table class="table-auto border-solid border-2 border-sky-500">
@@ -45,4 +36,78 @@
   <p>{{ name }}</p>
   <button class="btn btn-blue" (click)="downloadFile()">Download</button>
   <button class="btn btn-blue" (click)="deleteFile()">Delete</button>
+</ng-container>
+<ng-container *ngIf="showModal">
+  <div
+    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+  >
+    <div class="relative my-6 mx-auto w-[50%] h-[70%]">
+      <div
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
+      >
+        <div
+          class="flex items-start justify-between p-5 border-b border-solid rounded-t"
+        >
+          <button
+            class="p-1 ml-[93%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="toggleModal()"
+          >
+            x
+          </button>
+          <div class="flex flex-row-reverse w-[100%]">
+            <div class="grid mr-[15%] mt-[7%] w-[100%]">
+              <p>Carica allegati</p>
+              <ng-container *ngIf="selectedFile.length !== 0; else bottone">
+                <div
+                  class="w-[100%] border-2 border-slate-500 rounded max-h-40 overflow-auto"
+                >
+                  <ul class="mb-8 space-y-4 text-left text-gray-800">
+                    <ng-container *ngFor="let file of selectedFile">
+                      <li class="flex items-center">
+                        <div class="flex items-center w-[100%]">
+                          {{ file.name }}
+                          <span
+                            class="material-icons cursor-pointer text-red-600"
+                            (click)="removeFile(file.name)"
+                          >
+                            close
+                          </span>
+                        </div>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </div>
+              </ng-container>
+              <ng-template #bottone>
+                <button
+                  type="button"
+                  class="btn btn-blue w-[41%]"
+                  (click)="fileInput.click()"
+                >
+                  Scegli un file
+                </button>
+              </ng-template>
+              <div class="space-x-2 mt-[2%]">
+                <button
+                  type="button"
+                  class="btn btn-blue w-[20%]"
+                  (click)="onUpload()"
+                >
+                  Allega
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-blue w-[20%]"
+                  (click)="clearFiles()"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
 </ng-container>

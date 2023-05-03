@@ -11,12 +11,13 @@ import * as fs from 'file-saver';
 export class UploadComponent implements OnInit {
   selectedFile: File[] = [];
   uploadProgress: string[] = [];
-  viewNames: boolean = false;
+  viewNames: boolean = true;
   fileNames: string[] = [];
   viewSelectedFile: boolean = false;
   name: string = '';
   file?: Blob;
   fileExists: boolean = false;
+  showModal: boolean = false;
 
   constructor(private fetchData: FetchDataService) {}
 
@@ -40,18 +41,22 @@ export class UploadComponent implements OnInit {
         console.log('Dimensione massima 10MB');
         event.target.value = '';
         this.selectedFile = [];
+        return;
       } else if (
         !file.name.includes('.pdf') &&
         !file.name.includes('.docx') &&
         !file.name.includes('.jpg')
       ) {
         console.log('Inserire solo .pdf o .docx o .jpg');
+        return;
       } else if (this.fileNames.includes(file.name)) {
         console.log('Esiste già un file con questo nome');
+        return;
       } else {
         this.selectedFile.push(file);
       }
     }
+    this.showModal = true;
   }
 
   onUpload(): void {
@@ -88,9 +93,9 @@ export class UploadComponent implements OnInit {
     this.selectedFile = [];
   }
 
-  removeFile(event: any): void {
+  removeFile(fileName: string): void {
     this.selectedFile = this.selectedFile.filter((file) => {
-      return file.name != event.target.innerText;
+      return file.name != fileName;
     });
   }
 
@@ -134,10 +139,13 @@ export class UploadComponent implements OnInit {
       },
     });
   }
+
+  toggleModal(): void {
+    this.showModal = false;
+  }
+
+  clearFiles(): void {
+    this.selectedFile = [];
+  }
 }
-//cartelle custom per user
-
-//fe vedere se l'utente ha già un file con questo nome
-//be query con userid e nome e vedere se è vuoto
-
-//eliminazione immagini
+//i nomi dei file devono comparire all'ngoninit

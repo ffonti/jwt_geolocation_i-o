@@ -5,14 +5,18 @@ const prisma = new PrismaClient();
 exports.uploadFile = async (req, res) => {
   const userId = Number(req.headers["id"]);
 
-  const userImgs = await prisma.file.findMany({
-    select: {
-      original_name: true,
-    },
-    where: {
-      userId: userId,
-    },
-  });
+  const userImgs = await prisma.file
+    .findMany({
+      select: {
+        original_name: true,
+      },
+      where: {
+        userId: userId,
+      },
+    })
+    .catch((err) => {
+      return res.status(400).json({ msg: err });
+    });
 
   if (!fs.existsSync("./assets/uploads/" + userId.toString().trim() + "/")) {
     fs.mkdirSync("./assets/uploads/" + userId.toString().trim() + "/");
