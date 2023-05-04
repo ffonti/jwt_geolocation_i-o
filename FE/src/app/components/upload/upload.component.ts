@@ -18,7 +18,7 @@ export class UploadComponent implements OnInit {
   file?: Blob;
   fileExists: boolean = false;
   showModal: boolean = false;
-  myModal: boolean = false;
+  myModal: boolean = true;
 
   constructor(private fetchData: FetchDataService) {}
 

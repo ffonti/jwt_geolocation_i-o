@@ -65,12 +65,6 @@
                         <li class="flex items-center">
                           <div class="flex items-center w-[100%]">
                             {{ file.name }}
-                            <span
-                              class="material-icons cursor-pointer text-red-600"
-                              (click)="removeFile(file.name)"
-                            >
-                              close
-                            </span>
                           </div>
                         </li>
                       </ng-container>
@@ -117,28 +111,28 @@
   My Modal
 </button>
 <ng-container *ngIf="myModal">
+  <!-- Parte esterna -->
   <div
-    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none justify-center items-center flex"
   >
+    <!-- Rettangolo effettivo della modale, qui si regolano le dimensioni -->
     <div class="relative my-6 mx-auto w-[50%] h-[70%]">
+      <!-- Rettangolo con i bordi arrotondati, le dimensioni sono esattamente uguali al div soprastante -->
       <div
         class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
       >
-        <div
-          class="flex items-start justify-between p-5 border-solid rounded-t h-[100%]"
-        >
-          <button
-            class="p-1 ml-[90%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+        <!-- Div per la X -->
+        <div class="z-50 flex justify-end align-middle">
+          <span
+            class="material-icons cursor-pointer text-black mr-[1.5%] mt-[1.5%]"
             (click)="toggleMyModal()"
           >
-            x
-          </button>
-          <div class="flex flex-row-reverse h-[80%] w-[100%]">
-            <div class="grid mr-[15%] mt-[7%] w-[100%]"></div>
-          </div>
+            close
+          </span>
         </div>
       </div>
     </div>
   </div>
-  <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+  <!-- cos'è? -->
+  <div class="opacity-25 fixed inset-0 z-30 bg-black"></div>
 </ng-container>
