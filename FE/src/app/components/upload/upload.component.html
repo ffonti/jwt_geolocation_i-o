@@ -32,7 +32,7 @@
     <button class="btn btn-blue" (click)="deleteFile()">Delete</button>
   </ng-container>
 </div>
-<ng-container *ngIf="showModal">
+<!-- <ng-container *ngIf="showModal">
   <div
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
   >
@@ -106,7 +106,7 @@
     </div>
   </div>
   <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
-</ng-container>
+</ng-container> -->
 <button class="btn btn-blue mt-4 ml-2" (click)="toggleMyModal()">
   My Modal
 </button>
@@ -123,13 +123,62 @@
       >
         <!-- X -->
         <span
-          class="rounded bg-blue-400 absolute material-icons cursor-pointer text-white right-0 top-0 font-extrabold flex align-middle"
+          class="rounded bg-blue-400 absolute material-icons cursor-pointer text-white right-2 top-2 font-extrabold flex align-middle"
           (click)="toggleMyModal()"
         >
           close
         </span>
         <!-- Content -->
-        <div class="w-[100%] h-[100%]"></div>
+        <div class="w-[100%] h-[100%]">
+          <ng-container *ngIf="selectedFile.length !== 0; else bottone">
+            <div class="mt-[1.5%] ml-[2%] space-y-[4%]">
+              <p class="text-2xl font-bold">Carica allegati</p>
+              <p>Scegli uno o più file da allegare al rapportino</p>
+              <p>File allegati</p>
+            </div>
+            <div class="flex justify-center">
+              <div
+                class="mt-[2%] border-2 border-slate-500 rounded w-[90%] max-h-60 overflow-auto"
+              >
+                <ul class="my-[1%] ml-[1%] space-y-4 text-left text-gray-800">
+                  <ng-container *ngFor="let file of selectedFile">
+                    <li class="flex items-center">
+                      <div class="flex items-center w-[100%]">
+                        <div>{{ file.name }}</div>
+                        <div class="w-[100%] flex justify-end mr-[1%]">
+                          <span
+                            class="material-icons cursor-pointer text-red-600"
+                            (click)="removeFile(file.name)"
+                          >
+                            close
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+            </div>
+            <div class="absolute bottom-3 right-3 space-x-2">
+              <button class="btn btn-reset">reset</button>
+              <button class="btn btn-allega">ALLEGA</button>
+            </div>
+          </ng-container>
+          <ng-template #bottone>
+            <div
+              class="h-[100%] w-[100%] flex flex-col space-y-[3%] justify-center items-center"
+            >
+              <p>Scegli uno o più file da caricare</p>
+              <button
+                type="button"
+                class="btn btn-blue w-[30%] h-[10%]"
+                (click)="fileInput.click()"
+              >
+                Seleziona
+              </button>
+            </div>
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>

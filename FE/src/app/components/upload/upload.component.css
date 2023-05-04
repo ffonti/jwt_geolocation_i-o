@@ -6,6 +6,14 @@
   @apply bg-blue-500 text-white;
 }
 
+.btn-reset {
+  @apply bg-white text-green-900 border-2 border-green-900;
+}
+
+.btn-allega {
+  @apply bg-green-900 text-white border-2 border-green-900;
+}
+
 .btn-blue:hover {
   @apply bg-blue-700;
 }
