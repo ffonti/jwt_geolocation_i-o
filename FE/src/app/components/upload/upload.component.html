@@ -1,42 +1,37 @@
-<button class="btn btn-blue" routerLink="/homePage">HomePage</button>
-<br />
-<input
-  type="file"
-  style="display: none"
-  (change)="onFileSelected($event)"
-  #fileInput
-  multiple
-/>
-<button type="button" class="btn btn-blue" (click)="fileInput.click()">
-  Scegli un file
-</button>
-<!-- <button
-  type="button"
-  class="btn btn-blue"
-  (click)="onUpload()"
-  [disabled]="fileExists"
->
-  Upload file
-</button> -->
-<button type="button" class="btn btn-blue" (click)="getFileNames()">
-  {{ viewNames ? "Nascondi" : "Mostra" }} i nomi dei file
-</button>
-<ng-container *ngIf="viewNames">
-  <table class="table-auto border-solid border-2 border-sky-500">
-    <ng-container *ngFor="let name of fileNames">
-      <tr class="border-solid border-2 border-sky-500">
-        <td (click)="viewFile($event)" class="cursor-pointer">
-          {{ name }}
-        </td>
-      </tr>
-    </ng-container>
-  </table>
-</ng-container>
-<ng-container *ngIf="viewSelectedFile">
-  <p>{{ name }}</p>
-  <button class="btn btn-blue" (click)="downloadFile()">Download</button>
-  <button class="btn btn-blue" (click)="deleteFile()">Delete</button>
-</ng-container>
+<div class="space-y-4 ml-2">
+  <button class="btn btn-blue" routerLink="/homePage">HomePage</button>
+  <br />
+  <input
+    type="file"
+    style="display: none"
+    (change)="onFileSelected($event)"
+    #fileInput
+    multiple
+  />
+  <button type="button" class="btn btn-blue" (click)="fileInput.click()">
+    Scegli un file
+  </button>
+  <br />
+  <button type="button" class="btn btn-blue" (click)="getFileNames()">
+    {{ viewNames ? "Nascondi" : "Mostra" }} i nomi dei file
+  </button>
+  <ng-container *ngIf="viewNames">
+    <table class="table-auto border-solid border-2 border-sky-500">
+      <ng-container *ngFor="let name of fileNames">
+        <tr class="border-solid border-2 border-sky-500">
+          <td (click)="viewFile($event)" class="cursor-pointer">
+            {{ name }}
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+  </ng-container>
+  <ng-container *ngIf="viewSelectedFile">
+    <p>{{ name }}</p>
+    <button class="btn btn-blue" (click)="downloadFile()">Download</button>
+    <button class="btn btn-blue" (click)="deleteFile()">Delete</button>
+  </ng-container>
+</div>
 <ng-container *ngIf="showModal">
   <div
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
@@ -46,64 +41,100 @@
         class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
       >
         <div
-          class="flex items-start justify-between p-5 border-b border-solid rounded-t"
+          class="flex items-start justify-between p-5 border-solid rounded-t h-[100%]"
         >
           <button
-            class="p-1 ml-[93%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            class="p-1 ml-[90%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
             (click)="toggleModal()"
           >
             x
           </button>
-          <div class="flex flex-row-reverse w-[100%]">
+          <div class="flex flex-row-reverse h-[80%] w-[100%]">
             <div class="grid mr-[15%] mt-[7%] w-[100%]">
-              <p>Carica allegati</p>
-              <ng-container *ngIf="selectedFile.length !== 0; else bottone">
-                <div
-                  class="w-[100%] border-2 border-slate-500 rounded max-h-40 overflow-auto"
-                >
-                  <ul class="mb-8 space-y-4 text-left text-gray-800">
-                    <ng-container *ngFor="let file of selectedFile">
-                      <li class="flex items-center">
-                        <div class="flex items-center w-[100%]">
-                          {{ file.name }}
-                          <span
-                            class="material-icons cursor-pointer text-red-600"
-                            (click)="removeFile(file.name)"
-                          >
-                            close
-                          </span>
-                        </div>
-                      </li>
-                    </ng-container>
-                  </ul>
-                </div>
-              </ng-container>
-              <ng-template #bottone>
+              <p class="text-xl font-bold">Carica allegati</p>
+              <div class="mt-[5%]">
+                <ng-container *ngIf="selectedFile.length !== 0; else bottone">
+                  File allegati
+                  <div
+                    class="w-[100%] mt-[2%] border-2 border-slate-500 rounded max-h-52 overflow-auto"
+                  >
+                    <ul
+                      class="my-[1%] ml-[1%] space-y-4 text-left text-gray-800"
+                    >
+                      <ng-container *ngFor="let file of selectedFile">
+                        <li class="flex items-center">
+                          <div class="flex items-center w-[100%]">
+                            {{ file.name }}
+                            <span
+                              class="material-icons cursor-pointer text-red-600"
+                              (click)="removeFile(file.name)"
+                            >
+                              close
+                            </span>
+                          </div>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </ng-container>
+                <ng-template #bottone>
+                  <div class="flex justify-end">
+                    <button
+                      type="button"
+                      class="btn btn-blue w-[41%]"
+                      (click)="fileInput.click()"
+                    >
+                      Scegli un file
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+              <div class="space-x-2 mt-[2%] flex justify-end align-bottom">
                 <button
                   type="button"
-                  class="btn btn-blue w-[41%]"
-                  (click)="fileInput.click()"
-                >
-                  Scegli un file
-                </button>
-              </ng-template>
-              <div class="space-x-2 mt-[2%]">
-                <button
-                  type="button"
-                  class="btn btn-blue w-[20%]"
-                  (click)="onUpload()"
-                >
-                  Allega
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-blue w-[20%]"
+                  class="btn btn-blue h-[100%] w-[20%]"
                   (click)="clearFiles()"
                 >
                   Reset
                 </button>
+                <button
+                  type="button"
+                  class="btn btn-blue h-[100%] w-[20%]"
+                  (click)="onUpload()"
+                >
+                  Allega
+                </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+</ng-container>
+<button class="btn btn-blue mt-4 ml-2" (click)="toggleMyModal()">
+  My Modal
+</button>
+<ng-container *ngIf="myModal">
+  <div
+    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+  >
+    <div class="relative my-6 mx-auto w-[50%] h-[70%]">
+      <div
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
+      >
+        <div
+          class="flex items-start justify-between p-5 border-solid rounded-t h-[100%]"
+        >
+          <button
+            class="p-1 ml-[90%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="toggleMyModal()"
+          >
+            x
+          </button>
+          <div class="flex flex-row-reverse h-[80%] w-[100%]">
+            <div class="grid mr-[15%] mt-[7%] w-[100%]"></div>
           </div>
         </div>
       </div>

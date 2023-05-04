@@ -18,6 +18,7 @@ export class UploadComponent implements OnInit {
   file?: Blob;
   fileExists: boolean = false;
   showModal: boolean = false;
+  myModal: boolean = false;
 
   constructor(private fetchData: FetchDataService) {}
 
@@ -147,5 +148,8 @@ export class UploadComponent implements OnInit {
   clearFiles(): void {
     this.selectedFile = [];
   }
+
+  toggleMyModal(): void {
+    this.myModal = !this.myModal;
+  }
 }
-//i nomi dei file devono comparire all'ngoninit
