@@ -18,7 +18,6 @@ export class UploadComponent implements OnInit {
   file?: Blob;
   fileExists: boolean = false;
   showModal: boolean = false;
-  myModal: boolean = true;
 
   constructor(private fetchData: FetchDataService) {}
 
@@ -147,9 +146,5 @@ export class UploadComponent implements OnInit {
 
   clearFiles(): void {
     this.selectedFile = [];
-  }
-
-  toggleMyModal(): void {
-    this.myModal = !this.myModal;
   }
 }

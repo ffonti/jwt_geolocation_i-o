@@ -32,85 +32,7 @@
     <button class="btn btn-blue" (click)="deleteFile()">Delete</button>
   </ng-container>
 </div>
-<!-- <ng-container *ngIf="showModal">
-  <div
-    class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
-  >
-    <div class="relative my-6 mx-auto w-[50%] h-[70%]">
-      <div
-        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
-      >
-        <div
-          class="flex items-start justify-between p-5 border-solid rounded-t h-[100%]"
-        >
-          <button
-            class="p-1 ml-[90%] absolute bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-            (click)="toggleModal()"
-          >
-            x
-          </button>
-          <div class="flex flex-row-reverse h-[80%] w-[100%]">
-            <div class="grid mr-[15%] mt-[7%] w-[100%]">
-              <p class="text-xl font-bold">Carica allegati</p>
-              <div class="mt-[5%]">
-                <ng-container *ngIf="selectedFile.length !== 0; else bottone">
-                  File allegati
-                  <div
-                    class="w-[100%] mt-[2%] border-2 border-slate-500 rounded max-h-52 overflow-auto"
-                  >
-                    <ul
-                      class="my-[1%] ml-[1%] space-y-4 text-left text-gray-800"
-                    >
-                      <ng-container *ngFor="let file of selectedFile">
-                        <li class="flex items-center">
-                          <div class="flex items-center w-[100%]">
-                            {{ file.name }}
-                          </div>
-                        </li>
-                      </ng-container>
-                    </ul>
-                  </div>
-                </ng-container>
-                <ng-template #bottone>
-                  <div class="flex justify-end">
-                    <button
-                      type="button"
-                      class="btn btn-blue w-[41%]"
-                      (click)="fileInput.click()"
-                    >
-                      Scegli un file
-                    </button>
-                  </div>
-                </ng-template>
-              </div>
-              <div class="space-x-2 mt-[2%] flex justify-end align-bottom">
-                <button
-                  type="button"
-                  class="btn btn-blue h-[100%] w-[20%]"
-                  (click)="clearFiles()"
-                >
-                  Reset
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-blue h-[100%] w-[20%]"
-                  (click)="onUpload()"
-                >
-                  Allega
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
-</ng-container> -->
-<button class="btn btn-blue mt-4 ml-2" (click)="toggleMyModal()">
-  My Modal
-</button>
-<ng-container *ngIf="myModal">
+<ng-container *ngIf="showModal">
   <!-- Parte esterna -->
   <div
     class="overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none justify-center items-center flex"
@@ -124,7 +46,7 @@
         <!-- X -->
         <span
           class="rounded bg-blue-400 absolute material-icons cursor-pointer text-white right-2 top-2 font-extrabold flex align-middle"
-          (click)="toggleMyModal()"
+          (click)="toggleModal()"
         >
           close
         </span>
@@ -160,8 +82,12 @@
               </div>
             </div>
             <div class="absolute bottom-3 right-3 space-x-2">
-              <button class="btn btn-reset">reset</button>
-              <button class="btn btn-allega">ALLEGA</button>
+              <button class="btn btn-reset" (click)="clearFiles()">
+                reset
+              </button>
+              <button class="btn btn-allega" (click)="onUpload()">
+                ALLEGA
+              </button>
             </div>
           </ng-container>
           <ng-template #bottone>
