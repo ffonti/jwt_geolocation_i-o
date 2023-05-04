@@ -119,20 +119,19 @@
     <div class="relative my-6 mx-auto w-[50%] h-[70%]">
       <!-- Rettangolo con i bordi arrotondati, le dimensioni sono esattamente uguali al div soprastante -->
       <div
-        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
+        class="rounded-lg shadow-lg relative flex flex-col w-full h-full bg-white outline-none focus:outline-none"
       >
-        <!-- Div per la X -->
-        <div class="z-50 flex justify-end align-middle">
-          <span
-            class="material-icons cursor-pointer text-black mr-[1.5%] mt-[1.5%]"
-            (click)="toggleMyModal()"
-          >
-            close
-          </span>
-        </div>
+        <!-- X -->
+        <span
+          class="rounded bg-blue-400 absolute material-icons cursor-pointer text-white right-0 top-0 font-extrabold flex align-middle"
+          (click)="toggleMyModal()"
+        >
+          close
+        </span>
+        <!-- Content -->
+        <div class="w-[100%] h-[100%]"></div>
       </div>
     </div>
   </div>
-  <!-- cos'è? -->
   <div class="opacity-25 fixed inset-0 z-30 bg-black"></div>
 </ng-container>
