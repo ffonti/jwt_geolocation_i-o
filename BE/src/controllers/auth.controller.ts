@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
 
 const { PrismaClient } = require("@prisma/client");
 const { user } = new PrismaClient();
@@ -36,8 +37,8 @@ exports.register = async (req, res) => {
 
   await user.create({
     data: {
-      username,
-      password,
+      username: username,
+      password: bcrypt.hashSync(password, 8),
     },
   });
   res.status(201).json({
@@ -73,7 +74,7 @@ exports.login = async (req, res) => {
           expiresIn: 86400,
         });
 
-        if (password !== userExists.password) {
+        if (bcrypt.compareSync(userExists.password, password)) {
           return res.status(400).json({ msg: "Password errata" });
         }
 
