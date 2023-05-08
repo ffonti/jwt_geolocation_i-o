@@ -17,8 +17,6 @@ export class GetDataAuthService {
     role: localStorage.getItem('role') ? `${localStorage.getItem('role')}` : '',
   });
 
-  isLoggedIn: boolean = false;
-
   constructor(private http: HttpClient) {}
 
   getNomi(): Observable<any> {
@@ -40,6 +38,10 @@ export class GetDataAuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    return (
+      localStorage.getItem('token') !== null &&
+      localStorage.getItem('token') !== undefined &&
+      localStorage.getItem('token') !== ''
+    );
   }
 }
