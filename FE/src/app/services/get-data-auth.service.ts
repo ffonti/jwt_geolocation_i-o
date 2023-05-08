@@ -17,6 +17,8 @@ export class GetDataAuthService {
     role: localStorage.getItem('role') ? `${localStorage.getItem('role')}` : '',
   });
 
+  isLoggedIn: boolean = false;
+
   constructor(private http: HttpClient) {}
 
   getNomi(): Observable<any> {
@@ -35,5 +37,9 @@ export class GetDataAuthService {
     return this.http.get('http://localhost:3000/api/v1/adminPage/users', {
       headers: this.userData,
     });
+  }
+
+  isAuthenticated(): boolean {
+    return this.isLoggedIn;
   }
 }

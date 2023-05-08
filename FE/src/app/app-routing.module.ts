@@ -8,6 +8,7 @@ import { ColoriComponent } from './components/colori/colori.component';
 import { NomiComponent } from './components/nomi/nomi.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { UploadComponent } from './components/upload/upload.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -21,7 +22,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'upload', component: UploadComponent },
-  { path: 'adminPage', component: AdminPageComponent },
+  {
+    path: 'adminPage',
+    component: AdminPageComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
