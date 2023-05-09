@@ -1,8 +1,10 @@
+import { getLocaleMonthNames } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
+import 'leaflet-draw';
 import { Observable } from 'rxjs';
 
 const iconUrl = 'assets/marker-icon.png';
@@ -32,10 +34,11 @@ export class MapService {
   });
   currentLat: string = '';
   currentLng: string = '';
+  hasPoligono: boolean = false;
 
   constructor(private http: HttpClient) {}
 
-  initMap(map: any): void {
+  initMap(map: any): any {
     map = L.map('map', {
       center: [41.9027835, 12.4963655], //Coordinate di Roma
       zoom: 10,
@@ -53,18 +56,56 @@ export class MapService {
 
     tiles.addTo(map);
 
-    map.on('click', (e: any) => {
-      this.currentLat = e.latlng.lat;
-      this.currentLng = e.latlng.lng;
-      this.mark(map, e.latlng);
+    const drawFeatures = new L.FeatureGroup();
+    map.addLayer(drawFeatures);
+
+    const drawControl = new L.Control.Draw({
+      draw: {
+        rectangle: false,
+        circlemarker: false,
+        polyline: false,
+        polygon: {
+          allowIntersection: false,
+          shapeOptions: {
+            color: '#145DA0',
+            fillOpacity: 0.1,
+          },
+        },
+        circle: {
+          shapeOptions: {
+            color: '#145DA0',
+            fillOpacity: 0.1,
+          },
+        },
+      },
+      edit: {
+        featureGroup: drawFeatures,
+      },
     });
+    map.addControl(drawControl);
+
+    map.on('draw:created', (e: any) => {
+      const layer = e.layer;
+      console.log(e);
+      if (e.layerType === 'marker') {
+        this.currentLat = e.layer._latlng.lat;
+        this.currentLng = e.layer._latlng.lng;
+      } else if (drawFeatures.getLayers().length) {
+        console.log('Non possono esistere più poligoni!');
+        map.removeLayer(e.layer);
+        return;
+      }
+      drawFeatures.addLayer(layer);
+    });
+
+    return map;
   }
 
   mark(map: any, latlng: L.LatLng): void {
     const marker = L.marker([latlng.lat, latlng.lng]);
-    marker.addTo(map).bindPopup(latlng.lat.toString());
-    marker.on('click', () => {
-      marker.remove();
+    marker.addTo(map).bindPopup('ok');
+    marker.on('click', (e: any) => {
+      marker.openPopup();
     });
   }
 
@@ -82,5 +123,19 @@ export class MapService {
         user.id.toString().toLowerCase().trim(),
       { headers: this.userData }
     );
+  }
+
+  getMarkersFromUserId(id: any): Observable<any> {
+    return this.http.get(
+      'http://localhost:3000/api/v1/getMarkers/' + id.toString().trim(),
+      { headers: this.userData }
+    );
+  }
+
+  showMarkersOnMap(map: any, markers: any): void {
+    for (let marker of markers) {
+      const m = L.marker([marker.lat, marker.lng]);
+      m.addTo(map);
+    }
   }
 }

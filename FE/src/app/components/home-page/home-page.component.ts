@@ -7,13 +7,12 @@ import { MapService } from 'src/app/services/map.service';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  showModal: boolean = false;
+  showModal: boolean = true;
   isAdmin: boolean =
     localStorage.getItem('role')?.toString().toUpperCase() === 'ADMIN';
   lat: string = '';
   lng: string = '';
   nome: string = '';
-  private map: any;
 
   constructor(private mapService: MapService) {}
 
