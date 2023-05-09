@@ -90,23 +90,17 @@ export class MapService {
       if (e.layerType === 'marker') {
         this.currentLat = e.layer._latlng.lat;
         this.currentLng = e.layer._latlng.lng;
+        const marker = L.marker([+this.currentLat, +this.currentLng]);
+        marker.addTo(map).bindPopup('marker');
       } else if (drawFeatures.getLayers().length) {
         console.log('Non possono esistere più poligoni!');
         map.removeLayer(e.layer);
-        return;
+      } else {
+        drawFeatures.addLayer(layer);
       }
-      drawFeatures.addLayer(layer);
     });
 
     return map;
-  }
-
-  mark(map: any, latlng: L.LatLng): void {
-    const marker = L.marker([latlng.lat, latlng.lng]);
-    marker.addTo(map).bindPopup('ok');
-    marker.on('click', (e: any) => {
-      marker.openPopup();
-    });
   }
 
   save(nome: string, lat: string, lng: string): Observable<any> {
@@ -135,7 +129,7 @@ export class MapService {
   showMarkersOnMap(map: any, markers: any): void {
     for (let marker of markers) {
       const m = L.marker([marker.lat, marker.lng]);
-      m.addTo(map);
+      m.addTo(map).bindPopup('marker');
     }
   }
 }
