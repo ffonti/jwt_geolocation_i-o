@@ -1,5 +1,3 @@
-import * as jwt from "jsonwebtoken";
-
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -48,4 +46,8 @@ exports.getMarkers = async (req, res) => {
     },
   });
   return res.status(200).json({ markers });
+};
+
+export const markersInLayer = async (req, res) => {
+  console.log(req.body);
 };

@@ -7,5 +7,6 @@ const router = express.Router();
 
 router.post("/", [middleware.authJwt], controller.postMarker);
 router.get("/:id", [], controller.getMarkers);
+router.post("/inLayer", [], controller.markersInLayer);
 
 module.exports = router;

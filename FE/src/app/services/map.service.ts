@@ -86,7 +86,6 @@ export class MapService {
 
     map.on('draw:created', (e: any) => {
       const layer = e.layer;
-      console.log(e);
       if (e.layerType === 'marker') {
         this.currentLat = e.layer._latlng.lat;
         this.currentLng = e.layer._latlng.lng;
@@ -98,6 +97,15 @@ export class MapService {
       } else {
         drawFeatures.addLayer(layer);
       }
+      this.markersInLayer(layer).subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+      // this.showMarkersOnMap(map, newMarkers);
     });
 
     return map;
@@ -127,9 +135,39 @@ export class MapService {
   }
 
   showMarkersOnMap(map: any, markers: any): void {
+    const allMarkers = L.layerGroup().addTo(map);
+    allMarkers.clearLayers();
     for (let marker of markers) {
       const m = L.marker([marker.lat, marker.lng]);
-      m.addTo(map).bindPopup('marker');
+      m.addTo(allMarkers).bindPopup('marker');
+    }
+  }
+
+  markersInLayer(layer: any): Observable<any> {
+    if (layer._radius) {
+      const type = 'circle';
+      const center = layer._latlng;
+      const radius = layer._radius;
+      return this.http.post(
+        'http://localhost:3000/api/v1/getMarkers/inLayer',
+        { type, center, radius },
+        {
+          headers: this.userData,
+          observe: 'response',
+        }
+      );
+    } else {
+      const type = 'polygon';
+      const points = layer._latlngs[0];
+
+      return this.http.post(
+        'http://localhost:3000/api/v1/getMarkers/inLayer',
+        { type, points },
+        {
+          headers: this.userData,
+          observe: 'response',
+        }
+      );
     }
   }
 }
