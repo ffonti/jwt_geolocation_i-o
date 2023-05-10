@@ -98,6 +98,16 @@ export class MapService {
         map.removeLayer(e.layer);
       } else {
         drawFeatures.addLayer(this.layer);
+        this.layer.on('remove', (e: any) => {
+          this.getMarkersFromUserId(localStorage.getItem('id')).subscribe({
+            next: (res: any) => {
+              this.showMarkersOnMap(this.map, res.markers);
+            },
+            error: (err: any) => {
+              console.log(err);
+            },
+          });
+        });
       }
     });
 

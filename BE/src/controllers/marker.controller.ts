@@ -64,7 +64,39 @@ export const markersInLayer = async (req, res) => {
   });
 
   if (type === "polygon") {
-    const points = req.body.points;
+    for (var marker of markers) {
+      let coordinatesPoliygon: any[] = req.body.points.map((obj) => [
+        obj.lat,
+        obj.lng,
+      ]);
+
+      let coordPoint: number[] = [+marker.lat, +marker.lng];
+      console.log(coordinatesPoliygon, coordPoint);
+
+      function inside(point, vs) {
+        let x = point[0],
+          y = point[1];
+
+        let inside: Boolean = false;
+        for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+          let xi = vs[i][0],
+            yi = vs[i][1];
+          let xj = vs[j][0],
+            yj = vs[j][1];
+
+          let intersect =
+            yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+          if (intersect) inside = !inside;
+        }
+
+        return inside;
+      }
+
+      if (inside(coordPoint, coordinatesPoliygon)) {
+        filteredMarkers.push(marker);
+      }
+    }
+    return res.status(200).json({ filteredMarkers });
   } else if (type === "circle") {
     for (var marker of markers) {
       let spotCoordinates: number[] = [+marker.lat, +marker.lng];
