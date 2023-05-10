@@ -40,4 +40,8 @@ export class HomePageComponent {
     this.lat = this.mapService.currentLat;
     this.lng = this.mapService.currentLng;
   }
+
+  pickLayersFromBE(): void {
+    this.mapService.pickLayersFromBE();
+  }
 }

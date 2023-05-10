@@ -35,6 +35,8 @@ export class MapService {
   currentLat: string = '';
   currentLng: string = '';
   hasPoligono: boolean = false;
+  layer: any = undefined;
+  map: any;
 
   constructor(private http: HttpClient) {}
 
@@ -85,7 +87,7 @@ export class MapService {
     map.addControl(drawControl);
 
     map.on('draw:created', (e: any) => {
-      const layer = e.layer;
+      this.layer = e.layer;
       if (e.layerType === 'marker') {
         this.currentLat = e.layer._latlng.lat;
         this.currentLng = e.layer._latlng.lng;
@@ -95,19 +97,11 @@ export class MapService {
         console.log('Non possono esistere più poligoni!');
         map.removeLayer(e.layer);
       } else {
-        drawFeatures.addLayer(layer);
+        drawFeatures.addLayer(this.layer);
       }
-      this.markersInLayer(layer).subscribe({
-        next: (res) => {
-          console.log(res);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-      // this.showMarkersOnMap(map, newMarkers);
     });
 
+    this.map = map;
     return map;
   }
 
@@ -135,6 +129,11 @@ export class MapService {
   }
 
   showMarkersOnMap(map: any, markers: any): void {
+    map.eachLayer((layer: any) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
     const allMarkers = L.layerGroup().addTo(map);
     allMarkers.clearLayers();
     for (let marker of markers) {
@@ -143,13 +142,32 @@ export class MapService {
     }
   }
 
+  pickLayersFromBE(): void {
+    if (this.layer !== undefined) {
+      this.markersInLayer(this.layer).subscribe({
+        next: (res) => {
+          this.showMarkersOnMap(this.map, res.body.filteredMarkers);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      console.log('Creare prima una forma!');
+    }
+    this.layer = undefined;
+  }
+
   markersInLayer(layer: any): Observable<any> {
+    const userId: string = localStorage.getItem('id')!;
+
     if (layer._radius) {
       const type = 'circle';
       const center = layer._latlng;
-      const radius = layer._radius;
+      const radius = layer._mRadius;
       return this.http.post(
-        'http://localhost:3000/api/v1/getMarkers/inLayer',
+        'http://localhost:3000/api/v1/getMarkers/inLayer/' +
+          userId.toString().trim(),
         { type, center, radius },
         {
           headers: this.userData,
@@ -161,7 +179,8 @@ export class MapService {
       const points = layer._latlngs[0];
 
       return this.http.post(
-        'http://localhost:3000/api/v1/getMarkers/inLayer',
+        'http://localhost:3000/api/v1/getMarkers/inLayer/' +
+          userId.toString().trim(),
         { type, points },
         {
           headers: this.userData,
@@ -169,5 +188,13 @@ export class MapService {
         }
       );
     }
+  }
+
+  showFilteredMarkersOnMap(map: any, markers: any): void {
+    map.eachLayer((layer: any) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
   }
 }

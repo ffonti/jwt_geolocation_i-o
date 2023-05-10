@@ -49,5 +49,82 @@ exports.getMarkers = async (req, res) => {
 };
 
 export const markersInLayer = async (req, res) => {
-  console.log(req.body);
+  const userId = req.params.id;
+  const type = req.body.type;
+  var filteredMarkers = [];
+
+  const markers = await prisma.location.findMany({
+    where: { userId: +userId },
+    select: {
+      id: true,
+      name: true,
+      lat: true,
+      lng: true,
+    },
+  });
+
+  if (type === "polygon") {
+    const points = req.body.points;
+  } else if (type === "circle") {
+    for (var marker of markers) {
+      let spotCoordinates: number[] = [+marker.lat, +marker.lng];
+      const center = req.body.center;
+      const radius = req.body.radius;
+
+      function checkIfInside(spotCoordinates: any) {
+        let newRadius = distanceInKmBetweenEarthCoordinates(
+          spotCoordinates[0],
+          spotCoordinates[1],
+          center.lat,
+          center.lng
+        );
+
+        if (newRadius < radius) {
+          //point is inside the circle
+          return true;
+        } else if (newRadius > radius) {
+          //point is outside the circle
+          return false;
+        } else {
+          //point is on the circle
+          return true;
+        }
+      }
+
+      function distanceInKmBetweenEarthCoordinates(
+        lat1: number,
+        lon1: number,
+        lat2: number,
+        lon2: number
+      ) {
+        var earthRadiusM: number = 6371000;
+
+        var dLat = degreesToRadians(lat2 - lat1);
+        var dLon = degreesToRadians(lon2 - lon1);
+
+        lat1 = degreesToRadians(lat1);
+        lat2 = degreesToRadians(lat2);
+
+        var a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.sin(dLon / 2) *
+            Math.sin(dLon / 2) *
+            Math.cos(lat1) *
+            Math.cos(lat2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return earthRadiusM * c;
+      }
+
+      function degreesToRadians(degrees: number) {
+        return (degrees * Math.PI) / 180;
+      }
+
+      if (checkIfInside(spotCoordinates)) {
+        filteredMarkers.push(marker);
+      }
+    }
+    return res.status(200).json({ filteredMarkers });
+  } else {
+    return res.status(400).json({ msg: "Errore" });
+  }
 };
