@@ -7,10 +7,10 @@ import { icon, Marker } from 'leaflet';
 import 'leaflet-draw';
 import { Observable } from 'rxjs';
 
-const iconUrl = 'assets/marker-icon.png';
+const iconUrl = 'assets/flower.jpg';
 const iconDefault = icon({
   iconUrl,
-  iconSize: [25, 41],
+  iconSize: [40, 40],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
@@ -37,6 +37,7 @@ export class MapService {
   hasPoligono: boolean = false;
   layer: any = undefined;
   map: any;
+  visualizzaMarkers: boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -163,7 +164,22 @@ export class MapService {
         },
       });
     } else {
-      console.log('Creare prima una forma!');
+      if (!this.visualizzaMarkers) {
+        this.map.eachLayer((layer: any) => {
+          if (layer instanceof L.Marker) {
+            this.map.removeLayer(layer);
+          }
+        });
+      } else {
+        this.getMarkersFromUserId(localStorage.getItem('id')).subscribe({
+          next: (res) => {
+            this.showMarkersOnMap(this.map, res.markers);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+      }
     }
     this.layer = undefined;
   }

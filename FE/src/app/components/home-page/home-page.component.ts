@@ -13,6 +13,7 @@ export class HomePageComponent {
   lat: string = '';
   lng: string = '';
   nome: string = '';
+  visualizzaMarkers: boolean = false;
 
   constructor(private mapService: MapService) {}
 
@@ -42,6 +43,8 @@ export class HomePageComponent {
   }
 
   pickLayersFromBE(): void {
+    this.mapService.visualizzaMarkers = !this.mapService.visualizzaMarkers;
+    this.visualizzaMarkers = this.mapService.visualizzaMarkers;
     this.mapService.pickLayersFromBE();
   }
 }

@@ -13,13 +13,5 @@ export class MapComponent {
 
   ngAfterViewInit(): void {
     this.map = this.mapService.initMap(this.map);
-    this.mapService.getMarkersFromUserId(localStorage.getItem('id')).subscribe({
-      next: (res: any) => {
-        this.mapService.showMarkersOnMap(this.map, res.markers);
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-    });
   }
 }
