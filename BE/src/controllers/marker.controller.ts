@@ -71,7 +71,6 @@ export const markersInLayer = async (req, res) => {
       ]);
 
       let coordPoint: number[] = [+marker.lat, +marker.lng];
-      console.log(coordinatesPoliygon, coordPoint);
 
       function inside(point, vs) {
         let x = point[0],
