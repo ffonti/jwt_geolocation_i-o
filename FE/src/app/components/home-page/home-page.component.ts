@@ -7,7 +7,7 @@ import { MapService } from 'src/app/services/map.service';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  showModal: boolean = true;
+  showModal: boolean = false;
   isAdmin: boolean =
     localStorage.getItem('role')?.toString().toUpperCase() === 'ADMIN';
   lat: string = '';
