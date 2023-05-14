@@ -13,6 +13,8 @@ import { NomiComponent } from './components/nomi/nomi.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { MapComponent } from './components/map/map.component';
 import { UploadComponent } from './components/upload/upload.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,14 @@ import { UploadComponent } from './components/upload/upload.component';
     MapComponent,
     UploadComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

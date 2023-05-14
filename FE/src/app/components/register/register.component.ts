@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FetchDataService } from 'src/app/services/fetch-data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,8 @@ export class RegisterComponent {
 
   constructor(
     private fetchDataService: FetchDataService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   submit(): void {
@@ -23,10 +25,11 @@ export class RegisterComponent {
         console.log(res);
         this.msg = res.body.msg;
         this.router.navigateByUrl('/login');
+        this.toastr.success('Utente registrato!');
       },
       error: (err) => {
         console.log(err);
-        this.msg = err.error.msg;
+        this.toastr.error(err.error.msg);
       },
     });
   }

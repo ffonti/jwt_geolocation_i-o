@@ -11,7 +11,12 @@
     [(ngModel)]="password"
     placeholder="Password"
   />
-  <button type="button" class="btn btn-blue" (click)="submit()">
+  <button
+    type="button"
+    class="btn btn-blue"
+    [disabled]="username === '' || password === ''"
+    (click)="submit()"
+  >
     Registrati
   </button>
   <p>{{ msg }}</p>

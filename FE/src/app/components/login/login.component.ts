@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FetchDataService } from 'src/app/services/fetch-data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent {
 
   constructor(
     private fetchDataService: FetchDataService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   submit(): void {
@@ -29,10 +31,11 @@ export class LoginComponent {
         localStorage.setItem('username', res.body.username);
         localStorage.setItem('role', res.body.role);
         this.router.navigateByUrl('/homePage');
+        this.toastr.success('Accesso eseguito!');
       },
       error: (err) => {
         console.log(err);
-        this.msg = err.error.msg;
+        this.toastr.error(err.error.msg);
       },
     });
   }
