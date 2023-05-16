@@ -83,4 +83,11 @@ export class FetchDataService {
       }
     );
   }
+
+  getImages(): Observable<any> {
+    return this.http.get('http://localhost:3000/api/v1/uploadFile/getImages', {
+      headers: this.userData,
+      observe: 'response',
+    });
+  }
 }

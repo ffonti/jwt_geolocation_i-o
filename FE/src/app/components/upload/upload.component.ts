@@ -18,15 +18,28 @@ export class UploadComponent implements OnInit {
   file?: Blob;
   fileExists: boolean = false;
   showModal: boolean = false;
+  images: File[] = [];
 
   constructor(private fetchData: FetchDataService) {}
 
   ngOnInit(): void {
     this.fileNames = [];
+    this.images = [];
     this.fetchData.getFileNames().subscribe({
       next: (res) => {
         for (let name of res.body.fileNames) {
           this.fileNames.push(name.original_name);
+        }
+        console.log(this.fileNames);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    this.fetchData.getImages().subscribe({
+      next: (res) => {
+        for (let image of res.body.images) {
+          this.images.push(image);
         }
       },
       error: (err) => {

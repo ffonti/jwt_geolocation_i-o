@@ -83,6 +83,28 @@ exports.getFiles = async (req, res) => {
   }
 };
 
+export const getImages = async (req, res) => {
+  const userId = Number(req.headers["id"]);
+
+  const fileNames = await prisma.file.findMany({
+    where: {
+      userId: userId,
+    },
+    select: {
+      original_name: true,
+    },
+  });
+  if (fileNames) {
+    let images: File[] = [];
+    for (let name of fileNames) {
+      console.log(name);
+    }
+    // return res.status(200).json({ images });
+  } else {
+    return res.status(400).json({ msg: "Non ci sono images" });
+  }
+};
+
 export const download = async (req, res) => {
   const userId = Number(req.headers["id"]);
   const fileName = req.params.name;

@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
           expiresIn: 86400,
         });
 
-        if (bcrypt.compareSync(userExists.password, password)) {
+        if (bcrypt.compareSync(password, userExists.password)) {
           return res.status(400).json({ msg: "Password errata" });
         }
 
